@@ -1,12 +1,10 @@
 ---
 title: "PyTorch Tips and Tricks"
-summary: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
+description: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
 layout: post
-branch: master
 toc: true
 categories: [tutorials]
 comments: true
-category: blog
 ---
 
 ### PyTorch and its Modules
