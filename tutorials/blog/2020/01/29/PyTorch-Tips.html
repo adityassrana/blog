@@ -7,15 +7,15 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="PyTorch Tips and Tricks" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
-<meta property="og:description" content="an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
-<link rel="canonical" href="https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html" />
-<meta property="og:url" content="https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html" />
+<meta name="description" content="PyTorch and its Modules" />
+<meta property="og:description" content="PyTorch and its Modules" />
+<link rel="canonical" href="https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:url" content="https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:site_name" content="fastpages" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-01-29T10:41:00-06:00" />
+<meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","headline":"PyTorch Tips and Tricks","dateModified":"2020-01-29T10:41:00-06:00","datePublished":"2020-01-29T10:41:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
+{"description":"PyTorch and its Modules","headline":"PyTorch Tips and Tricks","dateModified":"2020-01-29T00:00:00-06:00","datePublished":"2020-01-29T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/playground/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/playground/feed.xml" title="fastpages" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -28,15 +28,15 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="PyTorch Tips and Tricks" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
-<meta property="og:description" content="an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
-<link rel="canonical" href="https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html" />
-<meta property="og:url" content="https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html" />
+<meta name="description" content="PyTorch and its Modules" />
+<meta property="og:description" content="PyTorch and its Modules" />
+<link rel="canonical" href="https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:url" content="https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:site_name" content="fastpages" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-01-29T10:41:00-06:00" />
+<meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","headline":"PyTorch Tips and Tricks","dateModified":"2020-01-29T10:41:00-06:00","datePublished":"2020-01-29T10:41:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/playground/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
+{"description":"PyTorch and its Modules","headline":"PyTorch Tips and Tricks","dateModified":"2020-01-29T00:00:00-06:00","datePublished":"2020-01-29T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -97,7 +97,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">PyTorch Tips and Tricks</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-29T10:41:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">PyTorch Tips and Tricks</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-29T00:00:00-06:00" itemprop="datePublished">
         Jan 29, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -108,11 +108,29 @@ window.onload = wrap_img;
 </span></p>
 
     
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/playground/categories/#tutorials">tutorials</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/playground/categories/#blog">blog</a>
+        
+      
+      </p>
+    
 
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3 id="pytorch-and-its-modules">PyTorch and its Modules</h3>
+    <ul class="section-nav">
+<li class="toc-entry toc-h3"><a href="#pytorch-and-its-modules">PyTorch and its Modules</a></li>
+<li class="toc-entry toc-h3"><a href="#dataset-and-dataloader-shenanigans">Dataset and DataLoader Shenanigans</a></li>
+<li class="toc-entry toc-h3"><a href="#writing-your-own-custom-autograd-functions">Writing your own custom Autograd Functions</a></li>
+<li class="toc-entry toc-h3"><a href="#saving-and-loading-models">Saving and Loading Models</a></li>
+<li class="toc-entry toc-h3"><a href="#learning-rate-schedulers">Learning Rate Schedulers</a></li>
+<li class="toc-entry toc-h3"><a href="#useful-links">Useful Links</a></li>
+</ul><h3 id="pytorch-and-its-modules">
+<a class="anchor" href="#pytorch-and-its-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>PyTorch and its Modules</h3>
 
 <ol>
   <li>
@@ -140,12 +158,15 @@ the nn.module() has a __ call function</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h3 id="dataset-and-dataloader-shenanigans">Dataset and DataLoader Shenanigans</h3>
+<h3 id="dataset-and-dataloader-shenanigans">
+<a class="anchor" href="#dataset-and-dataloader-shenanigans" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset and DataLoader Shenanigans</h3>
 
 <ol>
   <li>Create a dictionary: partition[‘train’] and partition[‘validation’].</li>
-  <li>Save and Read the paths from textfiles using <code class="highlighter-rouge">ls /* /* .png &gt; train_path.txt</code></li>
-  <li>For getting the number of images use <code class="highlighter-rouge">ls /* /* .png | wc -l</code></li>
+  <li>Save and Read the paths from textfiles using <code class="highlighter-rouge">ls /* /* .png &gt; train_path.txt</code>
+</li>
+  <li>For getting the number of images use <code class="highlighter-rouge">ls /* /* .png | wc -l</code>
+</li>
   <li>Order of Transform, image processing like crops and resize should be done on the PIL Image and not the tensor
     <ul>
       <li>Crop/Resize–&gt;toTensor–&gt;Normalize</li>
@@ -260,7 +281,8 @@ the nn.module() has a __ call function</p>
         <span class="k">return</span> <span class="n">image</span>
 </code></pre></div></div>
 
-<h3 id="writing-your-own-custom-autograd-functions">Writing your own custom Autograd Functions</h3>
+<h3 id="writing-your-own-custom-autograd-functions">
+<a class="anchor" href="#writing-your-own-custom-autograd-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Writing your own custom Autograd Functions</h3>
 
 <ol>
   <li>
@@ -328,7 +350,8 @@ y = x_backward + (x_forward - x_backward).detach()
 
 <p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
 
-<h3 id="saving-and-loading-models">Saving and Loading Models</h3>
+<h3 id="saving-and-loading-models">
+<a class="anchor" href="#saving-and-loading-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Saving and Loading Models</h3>
 
 <p>Python saves models as a state_dict. You may use either of the two ways</p>
 
@@ -357,11 +380,13 @@ y = x_backward + (x_forward - x_backward).detach()
     <span class="c1"># save model here
 </span></code></pre></div></div>
 
-<h3 id="learning-rate-schedulers">Learning Rate Schedulers</h3>
+<h3 id="learning-rate-schedulers">
+<a class="anchor" href="#learning-rate-schedulers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learning Rate Schedulers</h3>
 
 <p>Change LR with increasing epochs. Read <a href="https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html">Reduce LR on Plateau</a></p>
 
-<h3 id="useful-links">Useful Links</h3>
+<h3 id="useful-links">
+<a class="anchor" href="#useful-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Links</h3>
 <ol>
   <li><a href="https://dbader.org/blog/meaning-of-underscores-in-python">Using _ in Variable Naming</a></li>
   <li><a href="https://discuss.pytorch.org/t/pytorch-coding-conventions/42548">Pytorch Coding Conventions</a></li>
@@ -376,7 +401,7 @@ y = x_backward + (x_forward - x_backward).detach()
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/playground/2020/01/29/PyTorch-Tips.html" hidden></a>
+</script><a class="u-url" href="/playground/tutorials/blog/2020/01/29/PyTorch-Tips.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
