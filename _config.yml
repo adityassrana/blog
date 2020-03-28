@@ -14,7 +14,7 @@ github_repo: "fastpages"
 
 # OPTIONAL: override baseurl and url if using a custom domain
 # Note: leave out the trailing / from this value. 
-url: "https://adityassrana.github.io/playground" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://adityassrana.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 ###########################################################
 #########  Special Instructions for baseurl ###############
@@ -34,7 +34,7 @@ url: "https://adityassrana.github.io/playground" # the base hostname & protocol 
 #
 # 3. You must replace the parameter `baseurl` in _action_files/settings.ini with the same value as you set here but WITHOUT QUOTES.
 #
-baseurl: "" # the subpath of your site, e.g. "/blog".
+baseurl: "/playground" # the subpath of your site, e.g. "/blog".
 
 # Github and twitter are optional:
 minima:
