@@ -136,24 +136,23 @@ window.onload = wrap_img;
   <li>
     <p>The forward function in the NN module defines how to get the output from the NN.
 the nn.module() has a __ call function</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">model</span> <span class="o">=</span> <span class="n">NN</span><span class="p">()</span>
+ <span class="n">model</span><span class="p">(</span><span class="n">local_batch</span><span class="p">)</span><span class="c1">#which calls net.forward(local_batch)
+</span></code></pre></div>    </div>
   </li>
-</ol>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">NN</span><span class="p">()</span>
-<span class="n">model</span><span class="p">(</span><span class="n">local_batch</span><span class="p">)</span><span class="c1">#which calls net.forward(local_batch)
-</span></code></pre></div></div>
-
-<ol>
   <li>
     <p>Input: (N,C,H,W). The model and the convolutional layers expect the input tensor to be in this format, so when feeding an image/images to the model, add a dimension for batching.</p>
   </li>
   <li>
     <p>Converting from img–&gt;numpy representation and feeding  the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
+</code></pre></div>    </div>
   </li>
 </ol>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
-</code></pre></div></div>
 
 <h3 id="dataset-and-dataloader-shenanigans">
 <a class="anchor" href="#dataset-and-dataloader-shenanigans" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset and DataLoader Shenanigans</h3>
@@ -172,73 +171,78 @@ the nn.module() has a __ call function</p>
   <li>
     <p>the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255.</p>
   </li>
-  <li>Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is <strong>important</strong> to apply the specified mean and std when using a <strong>pre-trained model</strong>. This will normalize the image in the range [-1,1]. To get the original image back use</li>
-</ol>
+  <li>
+    <p>Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is <strong>important</strong> to apply the specified mean and std when using a <strong>pre-trained model</strong>. This will normalize the image in the range [-1,1]. To get the original image back use</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span> <span class="o">=</span> <span class="p">((</span><span class="n">image</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span><span class="p">)</span>
-</code></pre></div></div>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">image</span> <span class="o">=</span> <span class="p">((</span><span class="n">image</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span><span class="p">)</span>
+</code></pre></div>    </div>
 
-<p>For example, when using a model trained on ImageNet it is common to apply the transformation</p>
+    <p>For example, when using a model trained on ImageNet it is common to apply the transformation</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
-                     <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
-</code></pre></div></div>
-<p>For image tensors with values in [0, 1] this transformation will standardize it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.</p>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                      <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>For image tensors with values in [0, 1] this transformation will standardize it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.</p>
+  </li>
+  <li>
+    <p>Data Augmentation happens at the step below. At this point __getitem__ method in the Dataset Class is called, and the transformations are applied.</p>
 
-<ol>
-  <li>Data Augmentation happens at the step below. At this point __getitem__ method in the Dataset Class is called, and the transformations are applied.</li>
-</ol>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">():</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>torchvision.transforms vs torchvision.transforms.functional.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">():</span>
-</code></pre></div></div>
-<ol>
-  <li>torchvision.transforms vs torchvision.transforms.functional.</li>
-</ol>
+    <p>The functional API is statelessand you can directly pass all the necessary arguments.</p>
 
-<p>The functional API is statelessand you can directly pass all the necessary arguments.</p>
+    <p>Whereas torchvision.transforms are classes, initialized with some default parameters unless specified.</p>
 
-<p>Whereas torchvision.transforms are classes, initialized with some default parameters unless specified.</p>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="c1"># Class-based. Define once and use multiple times
+</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+ <span class="n">data</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Class-based. Define once and use multiple times
-</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+ <span class="c1"># Functional. Pass parameters each time
+</span> <span class="n">data</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:</p>
 
-<span class="c1"># Functional. Pass parameters each time
-</span><span class="n">data</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-</code></pre></div></div>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">))</span>
+ <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+ <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+  
+</code></pre></div>    </div>
+    <p>Functional API also allows us to perform identical transform on both image and target</p>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+     <span class="c1"># Resize
+</span>     <span class="n">resize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">520</span><span class="p">,</span> <span class="mi">520</span><span class="p">))</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">mask</span>
 
-<ol>
-  <li>The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:</li>
-</ol>
+ <span class="c1"># Random horizontal flipping
+</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">))</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+ <span class="c1"># Random vertical flipping
+</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 
-</code></pre></div></div>
-<p>Functional API also allows us to perform identical transform on both image and target</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
-    <span class="c1"># Resize
-</span>    <span class="n">resize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">520</span><span class="p">,</span> <span class="mi">520</span><span class="p">))</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">mask</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Example Dataset Class:</p>
 
-<span class="c1"># Random horizontal flipping
-</span><span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-
-<span class="c1"># Random vertical flipping
-</span><span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-
-</code></pre></div></div>
-<ol>
-  <li>Example Dataset Class:</li>
-</ol>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">torchvision</span>
@@ -248,7 +252,7 @@ the nn.module() has a __ call function</p>
 <span class="k">class</span> <span class="nc">Image_Train_Dataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span> <span class="c1">#inherit from Dataset class and overrride the methods __len__ and __getitem__
 </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">image_paths</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_id</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_paths_list</span><span class="p">,</span><span class="s">'r'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-        
+            
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#return size of the Dataset
 </span>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">)</span>
@@ -276,7 +280,9 @@ the nn.module() has a __ call function</p>
         <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
         <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">image</span>
-</code></pre></div></div>
+</code></pre></div>    </div>
+  </li>
+</ol>
 
 <h3 id="writing-your-own-custom-autograd-functions">
 <a class="anchor" href="#writing-your-own-custom-autograd-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Writing your own custom Autograd Functions</h3>
@@ -302,85 +308,107 @@ the nn.module() has a __ call function</p>
 <span class="k">return</span> <span class="n">grad_input</span>
 </code></pre></div></div>
 
-<p>Example</p>
+<ol>
+  <li>
+    <p>Example</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyReLU</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">MyReLU</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
 
-    <span class="o">@</span><span class="nb">staticmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="nb">input</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-        <span class="s">""" ctx is a context object that can be used
-        to stash information for backward computation. You can cache arbitrary
-        objects for use in the backward pass using the ctx.save_for_backward method.
-        """</span>
-        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">input</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+     <span class="o">@</span><span class="nb">staticmethod</span>
+     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+         <span class="nb">input</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+         <span class="s">""" ctx is a context object that can be used
+         to stash information for backward computation. You can cache arbitrary
+         objects for use in the backward pass using the ctx.save_for_backward method.
+         """</span>
+         <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+         <span class="k">return</span> <span class="nb">input</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="o">@</span><span class="nb">staticmethod</span>
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-        <span class="s">"""
-        In the backward pass we receive a Tensor containing the gradient of the loss
-        with respect to the output, and we need to compute the gradient of the loss
-        with respect to the input.
-        """</span>
-        <span class="nb">input</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
-        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-        <span class="n">grad_input</span><span class="p">[</span><span class="nb">input</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="n">grad_input</span>
+     <span class="o">@</span><span class="nb">staticmethod</span>
+     <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+         <span class="s">"""
+         In the backward pass we receive a Tensor containing the gradient of the loss
+         with respect to the output, and we need to compute the gradient of the loss
+         with respect to the input.
+         """</span>
+         <span class="nb">input</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+         <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+         <span class="n">grad_input</span><span class="p">[</span><span class="nb">input</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+         <span class="k">return</span> <span class="n">grad_input</span>
 
-</code></pre></div></div>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Dealing with non-differentiable functions:</p>
 
-<p>Dealing with non-differentiable functions:</p>
+    <p>w_hard : non-differentiable
+ w_soft : differentiable proxy for w_hard</p>
 
-<p>w_hard : non-differentiable
-w_soft : differentiable proxy for w_hard</p>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">stop_grad</span><span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span> <span class="c1">#in tensorflow
+</span> <span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>  <span class="c1">#in PyTorch
+</span></code></pre></div>    </div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">stop_grad</span><span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span> <span class="c1">#in tensorflow
-</span><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>  <span class="c1">#in PyTorch
-</span></code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>It gets you x_forward in the forward pass, but derivative acts as if you had x_backward
-````
-y = x_backward + (x_forward - x_backward).detach()
-````
-</code></pre></div></div>
-
-<p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
+    <p>It gets you x_forward in the forward pass, but derivative acts as if you had x_backward</p>
+    <div class="highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> y = x_backward + (x_forward - x_backward).detach()
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
+  </li>
+</ol>
 
 <h3 id="saving-and-loading-models">
 <a class="anchor" href="#saving-and-loading-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Saving and Loading Models</h3>
 
-<p>Python saves models as a state_dict. You may use either of the two ways</p>
+<ol>
+  <li>
+    <p>Python saves models as a state_dict. You may use either of the two ways</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'final-contours-branch{}.pt'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">expname</span><span class="p">))</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span><span class="s">'epoch'</span><span class="p">:</span><span class="n">epoch</span><span class="p">,</span><span class="s">'model_state_dict'</span><span class="p">:</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'optimizer_state_dict'</span><span class="p">:</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'loss'</span><span class="p">:</span><span class="n">train_loss</span><span class="p">},</span><span class="s">'resume_training.tar'</span><span class="p">)</span>
-</code></pre></div></div>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'final-contours-branch{}.pt'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">expname</span><span class="p">))</span>
+ <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span><span class="s">'epoch'</span><span class="p">:</span><span class="n">epoch</span><span class="p">,</span><span class="s">'model_state_dict'</span><span class="p">:</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'optimizer_state_dict'</span><span class="p">:</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'loss'</span><span class="p">:</span><span class="n">train_loss</span><span class="p">},</span><span class="s">'resume_training.tar'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>On Loading a model, if it shows a message like this, it means there were no missing keys.</p>
 
-<p>On Loading a model, if it shows a message like this, it means there were no missing keys.</p>
+    <div class="highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> IncompatibleKeys(missing_keys=[], unexpected_keys=[])
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IncompatibleKeys(missing_keys=[], unexpected_keys=[])
-</code></pre></div></div>
-<p>Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint</p>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="n">trained_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'checkpoint.pt'</span><span class="p">)</span>
+ <span class="n">model</span> <span class="o">=</span> <span class="n">reducio_binarizer</span><span class="o">.</span><span class="n">Reducio</span><span class="p">()</span>
+ <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">trained_dict</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+ <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">trained_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'checkpoint.pt'</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">reducio_binarizer</span><span class="o">.</span><span class="n">Reducio</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">trained_dict</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Keyboard interrupt and saving the last state of a model:</p>
 
-</code></pre></div></div>
-
-<p>Keyboard interrupt and saving the last state of a model:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
     <span class="c1"># training code here
 </span><span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
     <span class="c1"># save model here
-</span></code></pre></div></div>
+</span></code></pre></div>    </div>
+  </li>
+</ol>
 
 <h3 id="learning-rate-schedulers">
 <a class="anchor" href="#learning-rate-schedulers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learning Rate Schedulers</h3>
 
-<p>Change LR with increasing epochs. Read <a href="https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html">Reduce LR on Plateau</a></p>
+<ol>
+  <li>Change LR with increasing epochs. Read <a href="https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html">Reduce LR on Plateau</a>
+</li>
+</ol>
 
 <h3 id="useful-links">
 <a class="anchor" href="#useful-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Links</h3>
