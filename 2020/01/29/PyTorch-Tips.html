@@ -283,9 +283,7 @@ the nn.module() has a __ call function</p>
 <span class="k">return</span> <span class="n">grad_input</span>
 </code></pre></div></div>
 
-<ol>
-  <li>Example</li>
-</ol>
+<p>Example</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyReLU</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
 
@@ -313,14 +311,10 @@ the nn.module() has a __ call function</p>
 
 </code></pre></div></div>
 
-<ol>
-  <li>
-    <p>Dealing with non-differentiable functions:</p>
+<p>Dealing with non-differentiable functions:</p>
 
-    <p>w_hard : non-differentiable
- w_soft : differentiable proxy for w_hard</p>
-  </li>
-</ol>
+<p>w_hard : non-differentiable
+w_soft : differentiable proxy for w_hard</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">stop_grad</span><span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span> <span class="c1">#in tensorflow
 </span><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>  <span class="c1">#in PyTorch
@@ -332,29 +326,21 @@ y = x_backward + (x_forward - x_backward).detach()
 ````
 </code></pre></div></div>
 
-<ol>
-  <li>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</li>
-</ol>
+<p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
 
 <h3 id="saving-and-loading-models">Saving and Loading Models</h3>
 
-<ol>
-  <li>Python saves models as a state_dict. You may use either of the two ways</li>
-</ol>
+<p>Python saves models as a state_dict. You may use either of the two ways</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'final-contours-branch{}.pt'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">expname</span><span class="p">))</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span><span class="s">'epoch'</span><span class="p">:</span><span class="n">epoch</span><span class="p">,</span><span class="s">'model_state_dict'</span><span class="p">:</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'optimizer_state_dict'</span><span class="p">:</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="s">'loss'</span><span class="p">:</span><span class="n">train_loss</span><span class="p">},</span><span class="s">'resume_training.tar'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<ol>
-  <li>On Loading a model, if it shows a message like this, it means there were no missing keys.</li>
-</ol>
+<p>On Loading a model, if it shows a message like this, it means there were no missing keys.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IncompatibleKeys(missing_keys=[], unexpected_keys=[])
 </code></pre></div></div>
-<ol>
-  <li>Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint</li>
-</ol>
+<p>Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">trained_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'checkpoint.pt'</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">reducio_binarizer</span><span class="o">.</span><span class="n">Reducio</span><span class="p">()</span>
@@ -363,9 +349,7 @@ y = x_backward + (x_forward - x_backward).detach()
 
 </code></pre></div></div>
 
-<ol>
-  <li>Keyboard interrupt and saving the last state of a model:</li>
-</ol>
+<p>Keyboard interrupt and saving the last state of a model:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
     <span class="c1"># training code here
@@ -375,9 +359,7 @@ y = x_backward + (x_forward - x_backward).detach()
 
 <h3 id="learning-rate-schedulers">Learning Rate Schedulers</h3>
 
-<ol>
-  <li>Change LR with increasing epochs. Read <a href="https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html">Reduce LR on Plateau</a></li>
-</ol>
+<p>Change LR with increasing epochs. Read <a href="https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html">Reduce LR on Plateau</a></p>
 
 <h3 id="useful-links">Useful Links</h3>
 <ol>
