@@ -1,10 +1,14 @@
 ---
+title: "PyTorch Tips and Tricks"
+summary: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
 layout: post
+branch: master
+toc: true
+categories: [tutorials]
 comments: true
-title: PyTorch Tips and Tricks
-excerpt: an little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.
-date: 2020-01-29 16:41:00 +0000
+category: blog
 ---
+
 ### PyTorch and its Modules
 
 1. Variables are now deprecated. Tensors can use Autograd directly.
