@@ -157,7 +157,7 @@ grad_input = grad_output.clone()
 return grad_input
 ````
 
-5. Example
+Example
 
 ````python
 class MyReLU(torch.autograd.Function):
@@ -187,10 +187,10 @@ class MyReLU(torch.autograd.Function):
 ````
 
 
-6. Dealing with non-differentiable functions:
+Dealing with non-differentiable functions:
 
-    w_hard : non-differentiable
-    w_soft : differentiable proxy for w_hard
+w_hard : non-differentiable
+w_soft : differentiable proxy for w_hard
 
 ````python
 w_bar = w_soft + tf.stop_grad(w_hard - w_soft) #in tensorflow
@@ -202,23 +202,23 @@ w_bar = w_soft + (w_hard - w_soft).detach()  #in PyTorch
     y = x_backward + (x_forward - x_backward).detach()
     ````
 
-7. loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad
+loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad
 
 ### Saving and Loading Models
 
-1. Python saves models as a state_dict. You may use either of the two ways
+Python saves models as a state_dict. You may use either of the two ways
 
 ````python
 torch.save(model.state_dict(),'final-contours-branch{}.pt'.format(args.expname))
 torch.save({'epoch':epoch,'model_state_dict':model.state_dict(),'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss},'resume_training.tar')
 ````
 
-2. On Loading a model, if it shows a message like this, it means there were no missing keys.
+On Loading a model, if it shows a message like this, it means there were no missing keys.
 
 ````
 IncompatibleKeys(missing_keys=[], unexpected_keys=[])
 ````
-3. Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint
+Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint
 
 ````python
 trained_dict = torch.load('checkpoint.pt')
@@ -228,7 +228,7 @@ model.to(device)
 
 ````
 
-4.  Keyboard interrupt and saving the last state of a model:
+Keyboard interrupt and saving the last state of a model:
 
 ````python
 try:
@@ -239,7 +239,7 @@ except KeyboardInterrupt:
 
 ### Learning Rate Schedulers
 
-1. Change LR with increasing epochs. Read [Reduce LR on Plateau](https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html)
+Change LR with increasing epochs. Read [Reduce LR on Plateau](https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html)
 
 ### Useful Links
 1. [Using _ in Variable Naming](https://dbader.org/blog/meaning-of-underscores-in-python)
