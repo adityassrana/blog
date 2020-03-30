@@ -1,6 +1,7 @@
 ---
 title: "PyTorch Tips and Tricks"
-description: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
+description: "a little-more-than-introduct
+ory guide to help people get comfortable with PyTorch functionalities."
 layout: post
 toc: true
 categories: [tutorials]
@@ -11,7 +12,7 @@ comments: true
 1. Variables are now deprecated. Tensors can use Autograd directly.
 
 2. The forward function in the NN module defines how to get the output from the NN.
-the nn.module() has a __ call function 
+the nn.module() has a \_\_call\_\_ function 
 
     ````python
     model = NN()
