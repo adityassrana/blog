@@ -35,7 +35,7 @@ the nn.module() has a \_\_call\_\_ function
 4. Order of Transform, image processing like crops and resize should be done on the PIL Image and not the tensor
     - Crop/Resize-->toTensor-->Normalize
 
-5. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255.
+5. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
 
 6. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This will normalize the image in the range [-1,1]. To get the original image back use
 
@@ -215,7 +215,7 @@ return grad_input
     torch.save({'epoch':epoch,'model_state_dict':model.state_dict(),'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss},'resume_training.tar')
     ````
 
-2. On Loading a model, if it shows a message like this, it means there were no missing keys.
+2. On Loading a model, if it shows a message like this, it means there were no missing keys (it's not an error).
 
     ````
     IncompatibleKeys(missing_keys=[], unexpected_keys=[])
