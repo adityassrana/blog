@@ -58,7 +58,7 @@ the nn.module() has a \_\_call\_\_ function
     ````
 8. torchvision.transforms vs torchvision.transforms.functional.
 
-    The functional API is statelessand you can directly pass all the necessary arguments.
+    The functional API is stateless and you can directly pass all the necessary arguments.
 
     Whereas torchvision.transforms are classes, initialized with some default parameters unless specified. 
 
