@@ -10,12 +10,12 @@ comments: true
 
 1. Variables are now deprecated. Tensors can use Autograd directly.
 
-2. The forward function in the NN module defines how to get the output from the NN.
+2. The forward function in the NN module defines how to get the output from the NN. 
 the nn.module() has a \_\_call\_\_ function 
 
     ````python
     model = NN()
-    model(local_batch)#which calls net.forward(local_batch)
+    model(local_batch) #which calls net.forward(local_batch)
     ````
 
 3. Input: (N,C,H,W). The model and the convolutional layers expect the input tensor to be in this format, so when feeding an image/images to the model, add a dimension for batching.
