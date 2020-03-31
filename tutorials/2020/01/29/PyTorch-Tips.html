@@ -134,12 +134,12 @@ window.onload = wrap_img;
     <p>Variables are now deprecated. Tensors can use Autograd directly.</p>
   </li>
   <li>
-    <p>The forward function in the NN module defines how to get the output from the NN.
+    <p>The forward function in the NN module defines how to get the output from the NN. 
 the nn.module() has a __call__ function</p>
 
     <div class="language-python highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code> <span class="n">model</span> <span class="o">=</span> <span class="n">NN</span><span class="p">()</span>
- <span class="n">model</span><span class="p">(</span><span class="n">local_batch</span><span class="p">)</span><span class="c1">#which calls net.forward(local_batch)
+ <span class="n">model</span><span class="p">(</span><span class="n">local_batch</span><span class="p">)</span> <span class="c1">#which calls net.forward(local_batch)
 </span></code></pre></div>    </div>
   </li>
   <li>
