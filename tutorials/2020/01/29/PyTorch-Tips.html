@@ -7,15 +7,15 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="PyTorch Tips and Tricks" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities." />
-<meta property="og:description" content="a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities." />
+<meta name="description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<meta property="og:description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
 <link rel="canonical" href="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:url" content="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:site_name" content="Aditya Rana Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
 <script type="application/ld+json">
-{"datePublished":"2020-01-29T00:00:00-06:00","headline":"PyTorch Tips and Tricks","description":"a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities.","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"@type":"BlogPosting","url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","dateModified":"2020-01-29T00:00:00-06:00","@context":"https://schema.org"}</script>
+{"datePublished":"2020-01-29T00:00:00-06:00","headline":"PyTorch Tips and Tricks","description":"a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"@type":"BlogPosting","url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","dateModified":"2020-01-29T00:00:00-06:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -28,15 +28,15 @@
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="PyTorch Tips and Tricks" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities." />
-<meta property="og:description" content="a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities." />
+<meta name="description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<meta property="og:description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
 <link rel="canonical" href="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:url" content="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
 <meta property="og:site_name" content="Aditya Rana Blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
 <script type="application/ld+json">
-{"datePublished":"2020-01-29T00:00:00-06:00","headline":"PyTorch Tips and Tricks","description":"a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities.","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"@type":"BlogPosting","url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","dateModified":"2020-01-29T00:00:00-06:00","@context":"https://schema.org"}</script>
+{"datePublished":"2020-01-29T00:00:00-06:00","headline":"PyTorch Tips and Tricks","description":"a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"@type":"BlogPosting","url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","dateModified":"2020-01-29T00:00:00-06:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -97,7 +97,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">PyTorch Tips and Tricks</h1><p class="page-description">a little-more-than-introduct ory guide to help people get comfortable with PyTorch functionalities.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-29T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">PyTorch Tips and Tricks</h1><p class="page-description">a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-29T00:00:00-06:00" itemprop="datePublished">
         Jan 29, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -146,7 +146,7 @@ the nn.module() has a __call__ function</p>
     <p>Input: (N,C,H,W). The model and the convolutional layers expect the input tensor to be in this format, so when feeding an image/images to the model, add a dimension for batching.</p>
   </li>
   <li>
-    <p>Converting from img–&gt;numpy representation and feeding  the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.</p>
+    <p>Converting from img–&gt;numpy representation and feeding the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.</p>
 
     <div class="language-python highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
@@ -172,22 +172,22 @@ the nn.module() has a __call__ function</p>
     <p>the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).</p>
   </li>
   <li>
-    <p>Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is <strong>important</strong> to apply the specified mean and std when using a <strong>pre-trained model</strong>. This will normalize the image in the range [-1,1]. To get the original image back use</p>
+    <p>Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is <strong>important</strong> to apply the specified mean and std when using a <strong>pre-trained model</strong>. This normalizes the image in the range [-1,1]. To get the original image back use</p>
 
     <div class="language-python highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code> <span class="n">image</span> <span class="o">=</span> <span class="p">((</span><span class="n">image</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span><span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>For example, when using a model trained on ImageNet it is common to apply the transformation</p>
+    <p>For example, when using a model trained on ImageNet it is common to apply the transformation.</p>
 
     <div class="language-python highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
                       <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
 </code></pre></div>    </div>
-    <p>For image tensors with values in [0, 1] this transformation will standardize it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.</p>
+    <p>For image tensors with values in [0, 1] this transformation standardizes it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.</p>
   </li>
   <li>
-    <p>Data Augmentation happens at the step below. At this point __getitem__ method in the Dataset Class is called, and the transformations are applied.</p>
+    <p>Data Augmentation happens at the step below. At this point, __getitem__ method in the Dataset Class is called, and the transformations are applied.</p>
 
     <div class="language-python highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">():</span>
@@ -298,11 +298,11 @@ the nn.module() has a __call__ function</p>
     <p>Gradient returned by the class should have the same shape as the input to the class, to be able to update the input in the optimizer.step() function.</p>
   </li>
   <li>
-    <p>Avoid using in-place operations as they cause problems while back-propagation because the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.</p>
+    <p>Avoid using in-place operations as they cause problems while back-propagation because of the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.</p>
   </li>
 </ol>
 
-<p>An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a <em>, like .add</em>() or .scatter_(). Python operations like + = or *= are also inplace operations.</p>
+<p>An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a <em>, like .add</em>() or .scatter_(). Python operations like + = or *= are also in-place operations.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
 <span class="k">return</span> <span class="n">grad_input</span>
@@ -328,9 +328,7 @@ the nn.module() has a __call__ function</p>
      <span class="o">@</span><span class="nb">staticmethod</span>
      <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
          <span class="s">"""
-         In the backward pass we receive a Tensor containing the gradient of the loss
-         with respect to the output, and we need to compute the gradient of the loss
-         with respect to the input.
+         In the backward pass we receive a Tensor containing the gradient of the loss wrt the output, and we need to compute the gradient of the loss wrt the input.
          """</span>
          <span class="nb">input</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
          <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
