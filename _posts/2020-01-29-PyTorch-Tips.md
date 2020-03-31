@@ -1,7 +1,6 @@
 ---
 title: "PyTorch Tips and Tricks"
-description: "a little-more-than-introduct
-ory guide to help people get comfortable with PyTorch functionalities."
+description: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
 layout: post
 toc: true
 categories: [tutorials]
@@ -21,7 +20,7 @@ the nn.module() has a \_\_call\_\_ function
 
 3. Input: (N,C,H,W). The model and the convolutional layers expect the input tensor to be in this format, so when feeding an image/images to the model, add a dimension for batching.
 
-4. Converting from img-->numpy representation and feeding  the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.
+4. Converting from img-->numpy representation and feeding the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.
 
     ````python
     img = img.type('torch.DoubleTensor')
@@ -37,21 +36,21 @@ the nn.module() has a \_\_call\_\_ function
 
 5. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
 
-6. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This will normalize the image in the range [-1,1]. To get the original image back use
+6. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This normalizes the image in the range [-1,1]. To get the original image back use
 
     ````python
     image = ((image * std) + mean)
     ````
 
-    For example, when using a model trained on ImageNet it is common to apply the transformation
+    For example, when using a model trained on ImageNet it is common to apply the transformation.
 
     ````python
     transforms.Normalize(mean=[0.485, 0.456, 0.406],
                          std=[0.229, 0.224, 0.225])
     ````
-    For image tensors with values in [0, 1] this transformation will standardize it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.
+    For image tensors with values in [0, 1] this transformation standardizes it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.
 
-7. Data Augmentation happens at the step below. At this point \_\_getitem\_\_ method in the Dataset Class is called, and the transformations are applied.
+7. Data Augmentation happens at the step below. At this point, \_\_getitem\_\_ method in the Dataset Class is called, and the transformations are applied.
 
     ````python
     for data in train_loader():
@@ -149,9 +148,9 @@ the nn.module() has a \_\_call\_\_ function
 
 3. Gradient returned by the class should have the same shape as the input to the class, to be able to update the input in the optimizer.step() function.
 
-4. Avoid using in-place operations as they cause problems while back-propagation because the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.
+4. Avoid using in-place operations as they cause problems while back-propagation because of the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.
 
-An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a _, like .add_() or .scatter_(). Python operations like \+ = or \*= are also inplace operations.
+An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a _, like .add_() or .scatter_(). Python operations like \+ = or \*= are also in-place operations.
 
 
 ````python
@@ -177,9 +176,7 @@ return grad_input
         @staticmethod
         def backward(ctx, grad_output):
             """
-            In the backward pass we receive a Tensor containing the gradient of the loss
-            with respect to the output, and we need to compute the gradient of the loss
-            with respect to the input.
+            In the backward pass we receive a Tensor containing the gradient of the loss wrt the output, and we need to compute the gradient of the loss wrt the input.
             """
             input, = ctx.saved_tensors
             grad_input = grad_output.clone()
