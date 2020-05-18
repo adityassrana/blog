@@ -28,15 +28,13 @@ the nn.module() has a \_\_call\_\_ function
 
 ### Dataset and DataLoader Shenanigans
 
-1. Create a dictionary: partition['train'] and partition['validation'].
-2. Save and Read the paths from textfiles using ````ls /* /* .png > train_path.txt````
-3. For getting the number of images use ````ls /* /* .png | wc -l````
-4. Order of Transform, image processing like crops and resize should be done on the PIL Image and not the tensor
+1. Get comfortable using glob and argparse
+2. Order of Transform, image processing like crops and resize should be done on the PIL Image and not the tensor
     - Crop/Resize-->toTensor-->Normalize
 
-5. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
+3. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
 
-6. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This normalizes the image in the range [-1,1]. To get the original image back use
+4. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This normalizes the image in the range [-1,1]. To get the original image back use
 
     ````python
     image = ((image * std) + mean)
@@ -50,12 +48,12 @@ the nn.module() has a \_\_call\_\_ function
     ````
     For image tensors with values in [0, 1] this transformation standardizes it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.
 
-7. Data Augmentation happens at the step below. At this point, \_\_getitem\_\_ method in the Dataset Class is called, and the transformations are applied.
+5. Data Augmentation happens at the step below. At this point, \_\_getitem\_\_ method in the Dataset Class is called, and the transformations are applied.
 
     ````python
     for data in train_loader():
     ````
-8. torchvision.transforms vs torchvision.transforms.functional.
+6. torchvision.transforms vs torchvision.transforms.functional.
 
     The functional API is stateless and you can directly pass all the necessary arguments.
 
@@ -70,7 +68,7 @@ the nn.module() has a \_\_call\_\_ function
     data = TF.normalize(data, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
     ````
 
-9. The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:
+7. The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:
 
     ````python
     i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(512, 512))
@@ -97,7 +95,7 @@ the nn.module() has a \_\_call\_\_ function
         mask = TF.vflip(mask)
 
     ````
-10. Example Dataset Class:
+8. Example Dataset Class:
 
     ````python
     import torch
@@ -109,7 +107,9 @@ the nn.module() has a \_\_call\_\_ function
 
     class ImageDataset(torch.utils.data.Dataset):
         """Dataset class for creating data pipeline"""
-        # train_glob contains path to all images
+
+        # Glob pattern identifying training data. This pattern must expand
+        # to a list of RGB images in PNG format.
         def __init__(self, train_glob, patchsize):
           self.list_id = glob.glob(train_glob)
           self.patchsize = patchsize
