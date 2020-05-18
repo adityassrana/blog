@@ -249,17 +249,21 @@ the nn.module() has a __call__ function</p>
 <span class="kn">import</span> <span class="nn">torchvision.transforms.functional</span> <span class="k">as</span> <span class="n">TF</span> <span class="c1">#it's not tensorflow
 </span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
 
-<span class="k">class</span> <span class="nc">Image_Train_Dataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span> <span class="c1">#inherit from Dataset class and overrride the methods __len__ and __getitem__
-</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">image_paths</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">list_id</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_paths_list</span><span class="p">,</span><span class="s">'r'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">ImageDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="s">"""Dataset class for creating data pipeline"""</span>
+    <span class="c1"># train_glob contains path to all images
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_glob</span><span class="p">,</span> <span class="n">patchsize</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">list_id</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">train_glob</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">patchsize</span> <span class="o">=</span> <span class="n">patchsize</span>
             
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1">#return size of the Dataset
-</span>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">)</span>
+      <span class="c1">#denotes total number of samples
+</span>      <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">image</span><span class="p">):</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span><span class="c1">#allows us to apply the same crop on semantic segmentation if it's used
-</span>        <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+       <span class="c1"># allows us to apply the same crop on semantic segmentation if it's used
+</span>        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">))</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">image</span>
@@ -272,8 +276,9 @@ the nn.module() has a __call__ function</p>
         <span class="n">image</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">image</span>
 
-    <span class="k">def</span> <span class="nf">load_img_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span><span class="c1">#for making inference easier
-</span>        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    <span class="c1">#for loading images while debugging if using jupyter notebooks
+</span>    <span class="k">def</span> <span class="nf">load_img_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span> 
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">image</span>
 
     <span class="k">def</span> <span class="nf">load_tensor_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
