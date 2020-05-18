@@ -107,16 +107,20 @@ the nn.module() has a \_\_call\_\_ function
     import torchvision.transforms.functional as TF #it's not tensorflow
     from torchvision import transforms
 
-    class Image_Train_Dataset(Dataset): #inherit from Dataset class and overrride the methods __len__ and __getitem__
-        def __init__(self,image_paths):
-            self.list_id = open(image_paths_list,'r').read().splitlines()
+    class ImageDataset(torch.utils.data.Dataset):
+        """Dataset class for creating data pipeline"""
+        # train_glob contains path to all images
+        def __init__(self, train_glob, patchsize):
+          self.list_id = glob.glob(train_glob)
+          self.patchsize = patchsize
             
         def __len__(self):
-            #return size of the Dataset
-            return len(self.list_id)
+          #denotes total number of samples
+          return len(self.list_id)
 
         def transform(self,image):
-            i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(256,256))#allows us to apply the same crop on semantic segmentation if it's used
+           # allows us to apply the same crop on semantic segmentation if it's used
+            i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(256,256))
             image = TF.crop(image, i, j, h, w)
             image = TF.resize(image,size=(128,128))
             image = TF.to_tensor(image)
@@ -130,7 +134,8 @@ the nn.module() has a \_\_call\_\_ function
             image= self.transform(image)
             return image
 
-        def load_img_data(self,index):#for making inference easier
+        #for loading images while debugging if using jupyter notebooks
+        def load_img_data(self,index): 
             image = Image.open(self.list_id[index])
             return image
 
