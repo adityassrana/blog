@@ -5,155 +5,170 @@ layout: post
 toc: true
 categories: [tutorials]
 comments: true
----
-### PyTorch and its Modules
 
-1. Variables are now deprecated. Tensors can use Autograd directly.
+----
+Input Tensor Format : (N,C,H,W). The model and the convolutional layers expect the input tensor to be of this shape, so when feeding an image/images to the model, add a dimension for batching.
 
-2. The forward function in the NN module defines how to get the output from the NN. 
-the nn.module() has a \_\_call\_\_ function 
+Converting from img-->numpy representation and feeding the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.
 
-    ````python
-    model = NN()
-    model(local_batch) #which calls net.forward(local_batch)
-    ````
+````py
+img = img.type('torch.DoubleTensor')
+````
 
-3. Input: (N,C,H,W). The model and the convolutional layers expect the input tensor to be in this format, so when feeding an image/images to the model, add a dimension for batching.
+### Dataset and Transforms
 
-4. Converting from img-->numpy representation and feeding the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.
+- Dataset Class : what data will be input to the model and what augmentations will be applied
+- DataLoader Class : how big a minibatch will be, 
 
-    ````python
-    img = img.type('torch.DoubleTensor')
-    ````
+ To create our own dataset class in PyTorch we inherit from the Dataset Class and define two main methods, the ``__len__`` and the ``__getitem__``
 
-### Dataset and DataLoader Shenanigans
+ ````py
+ import torch
+ from PIL import Image
+ import torchvision
+ import torchvision.transforms.functional as TF #it's not tensorflow
 
-1. Get comfortable using glob and argparse
-2. Order of Transform, image processing like crops and resize should be done on the PIL Image and not the tensor
-    - Crop/Resize-->toTensor-->Normalize
+ class ImageDataset(torch.utils.data.Dataset):
+     """Dataset class for creating data pipeline for images"""
 
-3. the transforms.ToTensor() or TF.to_tensor(functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
+     
+     def __init__(self, train_glob, patchsize):
+     """"
+     train_glob is a Glob pattern identifying training data. 
+     This pattern must expand to a list of RGB images
+     in PNG format. for eg. "/images/cat/*.png"
+     
+     patchsize is the crop size you want from the image
+     """
+       self.list_id = glob.glob(train_glob)
+       self.patchsize = patchsize
+         
+     def __len__(self):
+       #denotes total number of samples
+       return len(self.list_id)
+    
+     def __getitem__(self, index):
+         #generates one sample of data
+         image = Image.open(self.list_id[index])
+         # convert to RGB if image is B/W
+         if image.mode == 'L':
+             image = image.convert('RGB')
+         image= self.transform(image)
+         return image
+    
+     def transform(self,image):
+         # Fucntional transforms allow us to apply  
+         # the same crop on semantic segmentation    
+         i, j, h, w = torchvision.transforms.RandomCrop.get_params(image ,
+                      output_size = (self.patchsize, self.patchsize))
+         image = TF.crop(image, i, j, h, w)
+         image = TF.to_tensor(image)
+         return image
 
-4. Using transforms.Normalize(mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ]) subtracts the mean and divides by the standard deviation. It is **important** to apply the specified mean and std when using a **pre-trained model**. This normalizes the image in the range [-1,1]. To get the original image back use
+ ````
 
-    ````python
-    image = ((image * std) + mean)
-    ````
+Image processing operations like cropping and resizing should be done on the PIL Image and not the tensor
+    
+    Image --> Crop/Resize --> toTensor --> Normalize
 
-    For example, when using a model trained on ImageNet it is common to apply the transformation.
+The transforms.ToTensor() or TF.to_tensor (functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).
 
-    ````python
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                         std=[0.229, 0.224, 0.225])
-    ````
-    For image tensors with values in [0, 1] this transformation standardizes it so that the mean of the data should be ~0 and the std ~1. This is also known as a standard score or z-score in the literature and usually helps in training.
+Using transforms.Normalize( mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ] ) normalizes the input by  subtracting the mean and dividing by the standard deviation, the output is in the range [-1,1]. It is **important** to apply the specified mean and std when using a **pre-trained model**.  To get the original image back use
 
-5. Data Augmentation happens at the step below. At this point, \_\_getitem\_\_ method in the Dataset Class is called, and the transformations are applied.
+````py
+image = ((image * std) + mean)
+````
 
-    ````python
-    for data in train_loader():
-    ````
-6. torchvision.transforms vs torchvision.transforms.functional.
+For example, when using a model trained on ImageNet it is common to apply this transformation. It normalizes the data to have a mean of ~0 and std of  ~1
 
-    The functional API is stateless and you can directly pass all the necessary arguments.
+````py
+transforms.Normalize(mean = [0.485, 0.456, 0.406],
+                     std = [0.229, 0.224, 0.225])
+````
 
-    Whereas torchvision.transforms are classes, initialized with some default parameters unless specified. 
+torchvision.transforms vs torchvision.transforms.functional.
 
-    ````python
-    # Class-based. Define once and use multiple times
-    transform = transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-    data = transform(data)
+The functional API is stateless and you can directly pass all the necessary arguments. Whereas torchvision.transforms are classes initialized with some default parameters unless specified. 
 
-    # Functional. Pass parameters each time
-    data = TF.normalize(data, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-    ````
+ ````python
+ # Class-based. Define once and use multiple times
+ transform = transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+ data = transform(data)
 
-7. The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:
+ # Functional. Pass parameters each time
+ data = TF.normalize(data, mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+ ````
 
-    ````python
-    i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(512, 512))
-    image = TF.crop(image, i, j, h, w)
-    mask = TF.crop(mask, i, j, h, w)
-  
-    ````
-    Functional API also allows us to perform identical transform on both image and target
-    ````python
-    def transform(self, image, mask):
-        # Resize
-        resize = transforms.Resize(size=(520, 520))
-        image = resize(image)
-        mask = resize(mask
+The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:
 
-    # Random horizontal flipping
-    if random.random() > 0.5:
-        image = TF.hflip(image)
-        mask = TF.hflip(mask)
+````python
+i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(512, 512))
+image = TF.crop(image, i, j, h, w)
+mask = TF.crop(mask, i, j, h, w)
+````
 
-    # Random vertical flipping
-    if random.random() > 0.5:
-        image = TF.vflip(image)
-        mask = TF.vflip(mask)
+Functional API also allows us to perform identical transforms on both image and target
+ ````python
+ def transform(self, image, mask):
+     # Resize
+     resize = transforms.Resize(size=(520, 520))
+     image = resize(image)
+     mask = resize(mask
 
-    ````
-8. Example Dataset Class:
+ # Random horizontal flipping
+ if random.random() > 0.5:
+     image = TF.hflip(image)
+     mask = TF.hflip(mask)
 
-    ````python
-    import torch
-    from torch.utils.data import Dataset
-    from PIL import Image
-    import torchvision
-    import torchvision.transforms.functional as TF #it's not tensorflow
-    from torchvision import transforms
+ # Random vertical flipping
+ if random.random() > 0.5:
+     image = TF.vflip(image)
+     mask = TF.vflip(mask)
 
-    class ImageDataset(torch.utils.data.Dataset):
-        """Dataset class for creating data pipeline"""
+ ````
+ 
+Data Augmentation happens at the step below. At this point, ````__getitem__```` method in the Dataset Class is called, and the transformations are applied.
 
-        # Glob pattern identifying training data. This pattern must expand
-        # to a list of RGB images in PNG format.
-        def __init__(self, train_glob, patchsize):
-          self.list_id = glob.glob(train_glob)
-          self.patchsize = patchsize
-            
-        def __len__(self):
-          #denotes total number of samples
-          return len(self.list_id)
+````python
+for data in train_loader():
+````
 
-        def transform(self,image):
-           # allows us to apply the same crop on semantic segmentation if it's used
-            i, j, h, w = transforms.RandomCrop.get_params(image, output_size=(256,256))
-            image = TF.crop(image, i, j, h, w)
-            image = TF.resize(image,size=(128,128))
-            image = TF.to_tensor(image)
-            return image
+### Writing  Custom Autograd Functions
 
-        def __getitem__(self, index):
-            #generates one sample of data
-            image = Image.open(self.list_id[index])
-            if image.mode == 'L':
-                image = image.convert('RGB')
-            image= self.transform(image)
-            return image
+Example
 
-        #for loading images while debugging if using jupyter notebooks
-        def load_img_data(self,index): 
-            image = Image.open(self.list_id[index])
-            return image
+````python
+class MyReLU(torch.autograd.Function):
 
-        def load_tensor_data(self,index):
-            image = Image.open(self.list_id[index])
-            image = self.transform(image)
-            return image
-    ````
+    @staticmethod
+    def forward(ctx, i):
+        input = i.clone()
+        """ ctx is a context object that can be used
+        to stash information for backward computation. You can cache arbitrary
+        objects for use in the backward pass using the ctx.save_for_backward method.
+        """
+        ctx.save_for_backward(input)
+        return input.clamp(min=0)
 
-### Writing your own custom Autograd Functions
+    @staticmethod
+    def backward(ctx, grad_output):
+        """
+        In the backward pass we receive a Tensor containing the gradient of the loss wrt the output, and we need to compute the gradient of the loss wrt the input.
+        """
+        input, = ctx.saved_tensors
+        grad_input = grad_output.clone()
+        grad_input[input < 0] = 0
+        return grad_input
 
-1. [PyTorch Examples for Reference Github](https://github.com/pytorch/pytorch/blob/53fe804322640653d2dddaed394838b868ce9a26/torch/autograd/_functions/pointwise.py)
+````
 
-2. [PyTorch official docs](https://pytorch.org/tutorials/beginner/examples_autograd/two_layer_net_custom_function.html)
+[PyTorch Examples for Reference Github](https://github.com/pytorch/pytorch/blob/53fe804322640653d2dddaed394838b868ce9a26/torch/autograd/_functions/pointwise.py)
 
-3. Gradient returned by the class should have the same shape as the input to the class, to be able to update the input in the optimizer.step() function.
+[PyTorch official docs](https://pytorch.org/tutorials/beginner/examples_autograd/two_layer_net_custom_function.html)
 
-4. Avoid using in-place operations as they cause problems while back-propagation because of the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.
+Gradient returned by the class should have the same shape as the input to the class, to be able to update the input in the optimizer.step() function.
+
+Avoid using in-place operations as they cause problems while back-propagation because of the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.
 
 An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a _, like .add_() or .scatter_(). Python operations like \+ = or \*= are also in-place operations.
 
@@ -163,89 +178,74 @@ grad_input = grad_output.clone()
 return grad_input
 ````
 
-5. Example
 
-    ````python
-    class MyReLU(torch.autograd.Function):
+Dealing with non-differentiable functions:
 
-        @staticmethod
-        def forward(ctx, i):
-            input = i.clone()
-            """ ctx is a context object that can be used
-            to stash information for backward computation. You can cache arbitrary
-            objects for use in the backward pass using the ctx.save_for_backward method.
-            """
-            ctx.save_for_backward(input)
-            return input.clamp(min=0)
+  w_hard : non-differentiable
+  w_soft : differentiable proxy for w_hard
 
-        @staticmethod
-        def backward(ctx, grad_output):
-            """
-            In the backward pass we receive a Tensor containing the gradient of the loss wrt the output, and we need to compute the gradient of the loss wrt the input.
-            """
-            input, = ctx.saved_tensors
-            grad_input = grad_output.clone()
-            grad_input[input < 0] = 0
-            return grad_input
+````python
+w_bar = w_soft + tf.stop_grad(w_hard - w_soft) #in tensorflow
+w_bar = w_soft + (w_hard - w_soft).detach()  #in PyTorch
+````
 
-    ````
+It gets you x_forward in the forward pass, but derivative acts as if you had x_backward
+````
+y = x_backward + (x_forward - x_backward).detach()
+````
 
-
-6. Dealing with non-differentiable functions:
-
-    w_hard : non-differentiable
-    w_soft : differentiable proxy for w_hard
-
-    ````python
-    w_bar = w_soft + tf.stop_grad(w_hard - w_soft) #in tensorflow
-    w_bar = w_soft + (w_hard - w_soft).detach()  #in PyTorch
-    ````
-
-    It gets you x_forward in the forward pass, but derivative acts as if you had x_backward
-    ````
-    y = x_backward + (x_forward - x_backward).detach()
-    ````
-
-7. loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad
+loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad
 
 ### Saving and Loading Models
 
-1. Python saves models as a state_dict. You may use either of the two ways
+PyTorch saves models as a state_dict.
 
-    ````python
-    torch.save(model.state_dict(),'final-contours-branch{}.pt'.format(args.expname))
-    torch.save({'epoch':epoch,'model_state_dict':model.state_dict(),'optimizer_state_dict':optimizer.state_dict(),'loss':train_loss},'resume_training.tar')
-    ````
+````py
+torch.save({  'encoder_state_dict': encoder.state_dict(),
+          'decoder_state_dict': decoder.state_dict()
+          },os.path.join(args.experiment_dir,"latest_checkpoint.tar"))
+````
 
-2. On Loading a model, if it shows a message like this, it means there were no missing keys (it's not an error).
+Use keyword  ````strict````  when you have added new layers to the architecture which were not present in the model you saved as checkpoint
 
-    ````
-    IncompatibleKeys(missing_keys=[], unexpected_keys=[])
-    ````
-3. Use this when you have added new layers to the architecture which were not present in the model you saved as checkpoint
+````python
+encoder = Encoder()
+checkpoint = torch.load('checkpoints/clic.tar')
+encoder.load_state_dict(checkpoint['encoder_state_dict'], strict=False)
+````
 
-    ````python
-    trained_dict = torch.load('checkpoint.pt')
-    model = reducio_binarizer.Reducio()
-    model.load_state_dict(trained_dict, strict=False)
-    model.to(device)
+On Loading a model, if it shows a message like this, it means there were no missing keys (it's not an error).
 
-    ````
+````
+IncompatibleKeys(missing_keys=[], unexpected_keys=[])
+````
 
-4.  Keyboard interrupt and saving the last state of a model:
+Keyboard interrupt and saving the last state of a model:
 
-    ````python
-    try:
-        # training code here
-    except KeyboardInterrupt:
-        # save model here
-    ````
+````python
+try:
+    # training code here
+except KeyboardInterrupt:
+    # save model here
+````
 
-### Learning Rate Schedulers
+### Extra Readings
 
-1. Change LR with increasing epochs. Read [Reduce LR on Plateau](https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html)
+- [Grokking PyTorch](https://github.com/Kaixhin/grokking-pytorch/blob/master/README.md)
+- [Effective PyTorch](https://github.com/vahidk/EffectivePyTorch/blob/master/README.md)
+- [The Python Magic Behind PyTorch](https://amitness.com/2020/03/python-magic-behind-pytorch)
+- [Python is Cool - ChipHuyen](https://github.com/chiphuyen/python-is-cool/blob/master/README.md)
+- [PyTorch StyleGuide](https://github.com/IgorSusmelj/pytorch-styleguide/blob/master/README.md)
+- [Clean Code Python](https://github.com/zedr/clean-code-python)
+- [Using _ in Variable Naming](https://dbader.org/blog/meaning-of-underscores-in-python)
+- [Pytorch Coding Conventions](https://discuss.pytorch.org/t/pytorch-coding-conventions/42548)
+- [Fine Tuning etc](https://spandan-madan.github.io/A-Collection-of-important-tasks-in-pytorch/)
 
-### Useful Links
-1. [Using _ in Variable Naming](https://dbader.org/blog/meaning-of-underscores-in-python)
-2. [Pytorch Coding Conventions](https://discuss.pytorch.org/t/pytorch-coding-conventions/42548)
-3. [Fine Tuning etc](https://spandan-madan.github.io/A-Collection-of-important-tasks-in-pytorch/)
+
+### More Tutorials
+- https://github.com/dsgiitr/d2l-pytorch
+- https://github.com/L1aoXingyu/pytorch-beginner
+- https://github.com/yunjey/pytorch-tutorial
+- https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/README.md
+
+
