@@ -1,0 +1,238 @@
+<hr />
+<p>title: “PyTorch Tips and Tricks”
+description: “a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.”
+layout: post
+toc: true
+categories: [tutorials]
+comments: true</p>
+
+<hr />
+<p>Input Tensor Format : (N,C,H,W). The model and the convolutional layers expect the input tensor to be of this shape, so when feeding an image/images to the model, add a dimension for batching.</p>
+
+<p>Converting from img–&gt;numpy representation and feeding the model gives an error because the input is in ByteTensor format. Only float operations are supported for conv-like operations.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="dataset-and-transforms">Dataset and Transforms</h3>
+
+<ul>
+  <li>Dataset Class : what data will be input to the model and what augmentations will be applied</li>
+  <li>DataLoader Class : how big a minibatch will be,</li>
+</ul>
+
+<p>To create our own dataset class in PyTorch we inherit from the Dataset Class and define two main methods, the <code class="highlighter-rouge">__len__</code> and the <code class="highlighter-rouge">__getitem__</code></p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">torch</span>
+ <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+ <span class="kn">import</span> <span class="nn">torchvision</span>
+ <span class="kn">import</span> <span class="nn">torchvision.transforms.functional</span> <span class="k">as</span> <span class="n">TF</span> <span class="c1">#it's not tensorflow
+</span>
+ <span class="k">class</span> <span class="nc">ImageDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+     <span class="s">"""Dataset class for creating data pipeline for images"""</span>
+
+     
+     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_glob</span><span class="p">,</span> <span class="n">patchsize</span><span class="p">):</span>
+     <span class="s">""""
+     train_glob is a Glob pattern identifying training data. 
+     This pattern must expand to a list of RGB images
+     in PNG format. for eg. "/images/cat/*.png"
+     
+     patchsize is the crop size you want from the image
+     """</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">list_id</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">train_glob</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">patchsize</span> <span class="o">=</span> <span class="n">patchsize</span>
+         
+     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="c1">#denotes total number of samples
+</span>       <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">)</span>
+    
+     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+         <span class="c1">#generates one sample of data
+</span>         <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_id</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+         <span class="c1"># convert to RGB if image is B/W
+</span>         <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s">'L'</span><span class="p">:</span>
+             <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">'RGB'</span><span class="p">)</span>
+         <span class="n">image</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+         <span class="k">return</span> <span class="n">image</span>
+    
+     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">image</span><span class="p">):</span>
+         <span class="c1"># Fucntional transforms allow us to apply  
+</span>         <span class="c1"># the same crop on semantic segmentation    
+</span>         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span> <span class="p">,</span>
+                      <span class="n">output_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patchsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">patchsize</span><span class="p">))</span>
+         <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+         <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+         <span class="k">return</span> <span class="n">image</span>
+
+</code></pre></div></div>
+
+<p>Image processing operations like cropping and resizing should be done on the PIL Image and not the tensor</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Image --&gt; Crop/Resize --&gt; toTensor --&gt; Normalize
+</code></pre></div></div>
+
+<p>The transforms.ToTensor() or TF.to_tensor (functional version of the same command) separates the PIL Image into 3 channels (R,G,B), converts it to the range (0,1). You can multiply by 255 to get the range (0,255).</p>
+
+<p>Using transforms.Normalize( mean=[_ ,_ ,_ ],std = [_ ,_ ,_ ] ) normalizes the input by  subtracting the mean and dividing by the standard deviation, the output is in the range [-1,1]. It is <strong>important</strong> to apply the specified mean and std when using a <strong>pre-trained model</strong>.  To get the original image back use</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span> <span class="o">=</span> <span class="p">((</span><span class="n">image</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="n">mean</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>For example, when using a model trained on ImageNet it is common to apply this transformation. It normalizes the data to have a mean of ~0 and std of  ~1</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                     <span class="n">std</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>torchvision.transforms vs torchvision.transforms.functional.</p>
+
+<p>The functional API is stateless and you can directly pass all the necessary arguments. Whereas torchvision.transforms are classes initialized with some default parameters unless specified.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1"># Class-based. Define once and use multiple times
+</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+ <span class="n">data</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+ <span class="c1"># Functional. Pass parameters each time
+</span> <span class="n">data</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>The functional API is very useful when transforming your data and target with the same random values, e.g. random cropping:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">RandomCrop</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">))</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Functional API also allows us to perform identical transforms on both image and target</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+     <span class="c1"># Resize
+</span>     <span class="n">resize</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">520</span><span class="p">,</span> <span class="mi">520</span><span class="p">))</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">mask</span>
+
+ <span class="c1"># Random horizontal flipping
+</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">hflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+ <span class="c1"># Random vertical flipping
+</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+     <span class="n">image</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+     <span class="n">mask</span> <span class="o">=</span> <span class="n">TF</span><span class="o">.</span><span class="n">vflip</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Data Augmentation happens at the step below. At this point, <code class="highlighter-rouge">__getitem__</code> method in the Dataset Class is called, and the transformations are applied.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">():</span>
+</code></pre></div></div>
+
+<h3 id="writing--custom-autograd-functions">Writing  Custom Autograd Functions</h3>
+
+<p>Example</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyReLU</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="s">""" ctx is a context object that can be used
+        to stash information for backward computation. You can cache arbitrary
+        objects for use in the backward pass using the ctx.save_for_backward method.
+        """</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">input</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+        <span class="s">"""
+        In the backward pass we receive a Tensor containing the gradient of the loss wrt the output, and we need to compute the gradient of the loss wrt the input.
+        """</span>
+        <span class="nb">input</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">grad_input</span><span class="p">[</span><span class="nb">input</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">grad_input</span>
+
+</code></pre></div></div>
+
+<p><a href="https://github.com/pytorch/pytorch/blob/53fe804322640653d2dddaed394838b868ce9a26/torch/autograd/_functions/pointwise.py">PyTorch Examples for Reference Github</a></p>
+
+<p><a href="https://pytorch.org/tutorials/beginner/examples_autograd/two_layer_net_custom_function.html">PyTorch official docs</a></p>
+
+<p>Gradient returned by the class should have the same shape as the input to the class, to be able to update the input in the optimizer.step() function.</p>
+
+<p>Avoid using in-place operations as they cause problems while back-propagation because of the way they modify the graph. As a precaution, always clone the input in the forward pass, and clone the incoming gradients before modifying them.</p>
+
+<p>An in-place operation directly modifies the content of a given Tensor without making a copy. Inplace operations in PyTorch are always postfixed with a <em>, like .add</em>() or .scatter_(). Python operations like + = or *= are also in-place operations.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="k">return</span> <span class="n">grad_input</span>
+</code></pre></div></div>
+
+<p>Dealing with non-differentiable functions:</p>
+
+<p>w_hard : non-differentiable
+  w_soft : differentiable proxy for w_hard</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">stop_grad</span><span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span> <span class="c1">#in tensorflow
+</span><span class="n">w_bar</span> <span class="o">=</span> <span class="n">w_soft</span> <span class="o">+</span> <span class="p">(</span><span class="n">w_hard</span> <span class="o">-</span> <span class="n">w_soft</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>  <span class="c1">#in PyTorch
+</span></code></pre></div></div>
+
+<p>It gets you x_forward in the forward pass, but derivative acts as if you had x_backward</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>y = x_backward + (x_forward - x_backward).detach()
+</code></pre></div></div>
+
+<p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
+
+<h3 id="saving-and-loading-models">Saving and Loading Models</h3>
+
+<p>PyTorch saves models as a state_dict.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>  <span class="s">'encoder_state_dict'</span><span class="p">:</span> <span class="n">encoder</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+          <span class="s">'decoder_state_dict'</span><span class="p">:</span> <span class="n">decoder</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+          <span class="p">},</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">experiment_dir</span><span class="p">,</span><span class="s">"latest_checkpoint.tar"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Use keyword  <code class="highlighter-rouge">strict</code>  when you have added new layers to the architecture which were not present in the model you saved as checkpoint</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">encoder</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">()</span>
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'checkpoints/clic.tar'</span><span class="p">)</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'encoder_state_dict'</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>On Loading a model, if it shows a message like this, it means there were no missing keys (it’s not an error).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IncompatibleKeys(missing_keys=[], unexpected_keys=[])
+</code></pre></div></div>
+
+<p>Keyboard interrupt and saving the last state of a model:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># training code here
+</span><span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="c1"># save model here
+</span></code></pre></div></div>
+
+<h3 id="extra-readings">Extra Readings</h3>
+
+<ul>
+  <li><a href="https://github.com/Kaixhin/grokking-pytorch/blob/master/README.md">Grokking PyTorch</a></li>
+  <li><a href="https://github.com/vahidk/EffectivePyTorch/blob/master/README.md">Effective PyTorch</a></li>
+  <li><a href="https://amitness.com/2020/03/python-magic-behind-pytorch">The Python Magic Behind PyTorch</a></li>
+  <li><a href="https://github.com/chiphuyen/python-is-cool/blob/master/README.md">Python is Cool - ChipHuyen</a></li>
+  <li><a href="https://github.com/IgorSusmelj/pytorch-styleguide/blob/master/README.md">PyTorch StyleGuide</a></li>
+  <li><a href="https://github.com/zedr/clean-code-python">Clean Code Python</a></li>
+  <li><a href="https://dbader.org/blog/meaning-of-underscores-in-python">Using _ in Variable Naming</a></li>
+  <li><a href="https://discuss.pytorch.org/t/pytorch-coding-conventions/42548">Pytorch Coding Conventions</a></li>
+  <li><a href="https://spandan-madan.github.io/A-Collection-of-important-tasks-in-pytorch/">Fine Tuning etc</a></li>
+</ul>
+
+<h3 id="more-tutorials">More Tutorials</h3>
+<ul>
+  <li>https://github.com/dsgiitr/d2l-pytorch</li>
+  <li>https://github.com/L1aoXingyu/pytorch-beginner</li>
+  <li>https://github.com/yunjey/pytorch-tutorial</li>
+  <li>https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/README.md</li>
+</ul>
+
