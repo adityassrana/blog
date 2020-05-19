@@ -5,7 +5,8 @@ layout: post
 toc: true
 categories: [tutorials]
 comments: true
-----
+---
+### PyTorch
 
 Input Tensor Format : (N,C,H,W). The model and the convolutional layers expect the input tensor to be of this shape, so when feeding an image/images to the model, add a dimension for batching.
 
