@@ -1,11 +1,133 @@
-<hr />
-<p>title: “PyTorch Tips and Tricks”
-description: “a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.”
-layout: post
-toc: true
-categories: [tutorials]
-comments: true
-—-</p>
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PyTorch Tips and Tricks | Aditya Rana Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="PyTorch Tips and Tricks" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<meta property="og:description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<link rel="canonical" href="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:site_name" content="Aditya Rana Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"PyTorch Tips and Tricks","description":"a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","datePublished":"2020-01-29T00:00:00-06:00","dateModified":"2020-01-29T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-156433332-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PyTorch Tips and Tricks | Aditya Rana Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="PyTorch Tips and Tricks" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<meta property="og:description" content="a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities." />
+<link rel="canonical" href="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html" />
+<meta property="og:site_name" content="Aditya Rana Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-29T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"PyTorch Tips and Tricks","description":"a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.","datePublished":"2020-01-29T00:00:00-06:00","dateModified":"2020-01-29T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html"},"url":"https://adityassrana.github.io/blog/tutorials/2020/01/29/PyTorch-Tips.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-156433332-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Aditya Rana Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">PyTorch Tips and Tricks</h1><p class="page-description">a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-29T00:00:00-06:00" itemprop="datePublished">
+        Jan 29, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#tutorials">tutorials</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h3"><a href="#pytorch">PyTorch</a></li>
+<li class="toc-entry toc-h3"><a href="#dataset-and-transforms">Dataset and Transforms</a></li>
+<li class="toc-entry toc-h3"><a href="#writing--custom-autograd-functions">Writing  Custom Autograd Functions</a></li>
+<li class="toc-entry toc-h3"><a href="#saving-and-loading-models">Saving and Loading Models</a></li>
+<li class="toc-entry toc-h3"><a href="#extra-readings">Extra Readings</a></li>
+<li class="toc-entry toc-h3"><a href="#more-tutorials">More Tutorials</a></li>
+</ul><h3 id="pytorch">
+<a class="anchor" href="#pytorch" aria-hidden="true"><span class="octicon octicon-link"></span></a>PyTorch</h3>
 
 <p>Input Tensor Format : (N,C,H,W). The model and the convolutional layers expect the input tensor to be of this shape, so when feeding an image/images to the model, add a dimension for batching.</p>
 
@@ -14,7 +136,8 @@ comments: true
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="s">'torch.DoubleTensor'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h3 id="dataset-and-transforms">Dataset and Transforms</h3>
+<h3 id="dataset-and-transforms">
+<a class="anchor" href="#dataset-and-transforms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset and Transforms</h3>
 
 <ul>
   <li>Dataset Class : what data will be input to the model and what augmentations will be applied</li>
@@ -128,7 +251,8 @@ comments: true
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">():</span>
 </code></pre></div></div>
 
-<h3 id="writing--custom-autograd-functions">Writing  Custom Autograd Functions</h3>
+<h3 id="writing--custom-autograd-functions">
+<a class="anchor" href="#writing--custom-autograd-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Writing  Custom Autograd Functions</h3>
 
 <p>Example</p>
 
@@ -185,7 +309,8 @@ comments: true
 
 <p>loss.backward() computes d(loss)/d(w) for every parameter which has requires_grad=True. They are accumulated in w.grad. And the optimizer.step() updates w using w.grad, w += -lr* x.grad</p>
 
-<h3 id="saving-and-loading-models">Saving and Loading Models</h3>
+<h3 id="saving-and-loading-models">
+<a class="anchor" href="#saving-and-loading-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Saving and Loading Models</h3>
 
 <p>PyTorch saves models as a state_dict.</p>
 
@@ -214,7 +339,8 @@ comments: true
     <span class="c1"># save model here
 </span></code></pre></div></div>
 
-<h3 id="extra-readings">Extra Readings</h3>
+<h3 id="extra-readings">
+<a class="anchor" href="#extra-readings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extra Readings</h3>
 
 <ul>
   <li><a href="https://github.com/Kaixhin/grokking-pytorch/blob/master/README.md">Grokking PyTorch</a></li>
@@ -228,7 +354,8 @@ comments: true
   <li><a href="https://spandan-madan.github.io/A-Collection-of-important-tasks-in-pytorch/">Fine Tuning etc</a></li>
 </ul>
 
-<h3 id="more-tutorials">More Tutorials</h3>
+<h3 id="more-tutorials">
+<a class="anchor" href="#more-tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>More Tutorials</h3>
 <ul>
   <li>https://github.com/dsgiitr/d2l-pytorch</li>
   <li>https://github.com/L1aoXingyu/pytorch-beginner</li>
@@ -236,3 +363,44 @@ comments: true
   <li>https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/README.md</li>
 </ul>
 
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="adityassrana/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/tutorials/2020/01/29/PyTorch-Tips.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/adityassrana" title="adityassrana"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/adityassrana" title="adityassrana"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
