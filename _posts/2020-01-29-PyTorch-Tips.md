@@ -244,9 +244,9 @@ except KeyboardInterrupt:
 
 
 ### More Tutorials
-- https://github.com/dsgiitr/d2l-pytorch
-- https://github.com/L1aoXingyu/pytorch-beginner
-- https://github.com/yunjey/pytorch-tutorial
-- https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/README.md
+- [https://github.com/dsgiitr/d2l-pytorch](https://github.com/dsgiitr/d2l-pytorch)
+- [https://github.com/L1aoXingyu/pytorch-beginner](https://github.com/L1aoXingyu/pytorch-beginner)
+- [https://github.com/yunjey/pytorch-tutorial](https://github.com/yunjey/pytorch-tutorial)
+- [https://github.com/MorvanZhou/PyTorch-Tutorial](https://github.com/MorvanZhou/PyTorch-Tutorial)
 
 
