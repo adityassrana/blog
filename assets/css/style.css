@@ -484,7 +484,7 @@ table td { text-overflow: ellipsis; overflow: hidden; max-width: 15em; }
 .highlight .gd { color: #ff5555; }
 
 /* style.css | https://adityassrana.github.io/playground/assets/css/style.css */
-.post-content p, .post-content li { /* font-size: 20px; */ font-size: 16px; }
+.post-content p, .post-content li { /* font-size: 20px; */ font-size: 16px; /* color: #515151; */ color: #111; }
 
 /* style.css | https://adityassrana.github.io/blog/assets/css/style.css */
 @media screen and (min-width: 800px) { .wrapper { /* max-width: calc(800px - (30px * 2)); */ max-width: calc(900px - (30px * 2)); } }
