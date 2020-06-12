@@ -4,4 +4,4 @@ title: Resources
 permalink: /resources/
 ---
 
-What a fun place to be at
+Coming Soon
