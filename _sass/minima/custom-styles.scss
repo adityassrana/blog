@@ -21,11 +21,20 @@
 }
 
 
+
+/* style.css | http://0.0.0.0:4000/blog/assets/css/style.css */
+
+.feed-subscribe .svg-icon {
+  /* padding: 5px 5px 2px 0; */
+  padding: 0px 0px 0px 0;
+}
+
+
 /* style.css | https://adityassrana.github.io/blog/assets/css/style.css */
 
 @media screen and (min-width: 800px) {
   .wrapper {
     /* max-width: calc(800px - (30px * 2)); */
-    max-width: calc(900px - (30px * 2));
+    max-width: calc(860px - (30px * 2));
   }
 }

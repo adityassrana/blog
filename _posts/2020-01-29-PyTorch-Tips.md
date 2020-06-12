@@ -1,5 +1,5 @@
 ---
-title: "PyTorch Tips and Tricks"
+title: PyTorch Tips and Tricks
 description: "a little-more-than-introductory guide to help people get comfortable with PyTorch functionalities."
 layout: post
 toc: true
