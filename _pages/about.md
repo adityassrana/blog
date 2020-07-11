@@ -1,6 +1,6 @@
 ---
 layout : about
-title: About
+title: Contact
 permalink: /about
 search_exclude: true
 ---
