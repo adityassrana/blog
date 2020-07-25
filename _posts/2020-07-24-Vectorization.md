@@ -7,7 +7,7 @@ badges: true
 comments: true
 author: Aditya Rana, Amey Agrawal and Nikhil Verma
 image: images/diagram.png
-categories: [broadcasting]
+categories: [broadcasting,numpy]
 nb_path: _notebooks/2020-25-07-Vectorization.ipynb
 layout: notebook
 ---
@@ -37,8 +37,8 @@ layout: notebook
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Situation">Situation<a class="anchor-link" href="#Situation"> </a></h3><p>In a hypothetical $n$-dimensional universe, there exists $p$ population of a particular species of human, Homo BITSians. These species like to hangout in specialized eateries, called Redi. In this universe, there are $q$ Redis which serve delicious snacks and beverages at nominal prices. Our task is to find the nearest Redi from each of the Homo BITSians so that they spend less time on commuting. Another part of the problem is to give the number of Redis inside a radius of $r$ metres from each Homo BITSians which will help them to hangout in as many Redis as possible.</p>
-<h3 id="Problem">Problem<a class="anchor-link" href="#Problem"> </a></h3><p>Matrices, $X \in p \times n$ and $Y \in q \times n$, which has the co-ordinates of $p$ Homo BITSians and $q$ Redis respectively in the $n$-dimensional universe are given. The $i^{th}$ row in the matrix, $X$, corresponds to the $i^{th}$ Homo BITSian. Similarly, the $i^{th}$ row in the matrix, $Y$, corresponds to the $i^{th}$ Redi.</p>
+<h3 id="Situation">Situation<a class="anchor-link" href="#Situation"> </a></h3><p>In a hypothetical $n$-dimensional universe, there exists $p$ population of a particular species of humans, Homo BITSians. This species likes to hangout in specialized eateries, called Redis. In this universe, there are $q$ Redis which serve delicious snacks and beverages at nominal prices. Our task is to find the nearest Redi from each of the Homo BITSians so that they spend less time on commuting.</p>
+<h3 id="Problem">Problem<a class="anchor-link" href="#Problem"> </a></h3><p>Matrices, $X \in p \times n$ and $Y \in q \times n$, which have the co-ordinates of $p$ Homo BITSians and $q$ Redis respectively in the $n$-dimensional universe are given. The $i^{th}$ row in the matrix, $X$, corresponds to the $i^{th}$ Homo BITSian. Similarly, the $i^{th}$ row in the matrix, $Y$, corresponds to the $i^{th}$ Redi.</p>
 <p><strong>Note</strong>: Here, row numbering (indexing) starts from $0$.</p>
 <h3 id="Task">Task<a class="anchor-link" href="#Task"> </a></h3><p>Given $X$, $Y$, find a vector, $V$, of length $p$. The vector, $V$, is such that the $i^{th}$ element of $V$ has the index of the nearest Redi from the $i^{th}$ Homo BITSian.</p>
 <p>Distance metric is the usual $l_2$-norm.
