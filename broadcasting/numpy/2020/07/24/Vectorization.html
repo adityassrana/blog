@@ -10,14 +10,14 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy" />
 <meta property="og:description" content="A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy" />
-<link rel="canonical" href="https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html" />
-<meta property="og:url" content="https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html" />
+<link rel="canonical" href="https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html" />
 <meta property="og:site_name" content="Aditya Rana Blog" />
 <meta property="og:image" content="https://adityassrana.github.io/blog/images/diagram.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-24T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Aditya Rana, Amey Agrawal and Nikhil Verma"},"headline":"Vectorizing Nearest Neighbours Algorithm","description":"A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy","datePublished":"2020-07-24T00:00:00-05:00","dateModified":"2020-07-24T00:00:00-05:00","image":"https://adityassrana.github.io/blog/images/diagram.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html"},"url":"https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Aditya Rana, Amey Agrawal and Nikhil Verma"},"headline":"Vectorizing Nearest Neighbours Algorithm","description":"A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy","datePublished":"2020-07-24T00:00:00-05:00","dateModified":"2020-07-24T00:00:00-05:00","image":"https://adityassrana.github.io/blog/images/diagram.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html"},"url":"https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -34,14 +34,14 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy" />
 <meta property="og:description" content="A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy" />
-<link rel="canonical" href="https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html" />
-<meta property="og:url" content="https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html" />
+<link rel="canonical" href="https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html" />
 <meta property="og:site_name" content="Aditya Rana Blog" />
 <meta property="og:image" content="https://adityassrana.github.io/blog/images/diagram.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-24T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Aditya Rana, Amey Agrawal and Nikhil Verma"},"headline":"Vectorizing Nearest Neighbours Algorithm","description":"A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy","datePublished":"2020-07-24T00:00:00-05:00","dateModified":"2020-07-24T00:00:00-05:00","image":"https://adityassrana.github.io/blog/images/diagram.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html"},"url":"https://adityassrana.github.io/blog/broadcasting/2020/07/24/Vectorization.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Aditya Rana, Amey Agrawal and Nikhil Verma"},"headline":"Vectorizing Nearest Neighbours Algorithm","description":"A simple problem statement to display computational speed up due to vectorization and broadcasting in numpy","datePublished":"2020-07-24T00:00:00-05:00","dateModified":"2020-07-24T00:00:00-05:00","image":"https://adityassrana.github.io/blog/images/diagram.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html"},"url":"https://adityassrana.github.io/blog/broadcasting/numpy/2020/07/24/Vectorization.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -134,6 +134,9 @@ window.onload = wrap_img;
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
         <a class="category-tags-link" href="/blog/categories/#broadcasting">broadcasting</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#numpy">numpy</a>
         
       
       </p>
@@ -208,11 +211,11 @@ window.onload = wrap_img;
 <h3 id="Situation">
 <a class="anchor" href="#Situation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Situation<a class="anchor-link" href="#Situation"> </a>
 </h3>
-<p>In a hypothetical $n$-dimensional universe, there exists $p$ population of a particular species of human, Homo BITSians. These species like to hangout in specialized eateries, called Redi. In this universe, there are $q$ Redis which serve delicious snacks and beverages at nominal prices. Our task is to find the nearest Redi from each of the Homo BITSians so that they spend less time on commuting. Another part of the problem is to give the number of Redis inside a radius of $r$ metres from each Homo BITSians which will help them to hangout in as many Redis as possible.</p>
+<p>In a hypothetical $n$-dimensional universe, there exists $p$ population of a particular species of humans, Homo BITSians. This species likes to hangout in specialized eateries, called Redis. In this universe, there are $q$ Redis which serve delicious snacks and beverages at nominal prices. Our task is to find the nearest Redi from each of the Homo BITSians so that they spend less time on commuting.</p>
 <h3 id="Problem">
 <a class="anchor" href="#Problem" aria-hidden="true"><span class="octicon octicon-link"></span></a>Problem<a class="anchor-link" href="#Problem"> </a>
 </h3>
-<p>Matrices, $X \in p \times n$ and $Y \in q \times n$, which has the co-ordinates of $p$ Homo BITSians and $q$ Redis respectively in the $n$-dimensional universe are given. The $i^{th}$ row in the matrix, $X$, corresponds to the $i^{th}$ Homo BITSian. Similarly, the $i^{th}$ row in the matrix, $Y$, corresponds to the $i^{th}$ Redi.</p>
+<p>Matrices, $X \in p \times n$ and $Y \in q \times n$, which have the co-ordinates of $p$ Homo BITSians and $q$ Redis respectively in the $n$-dimensional universe are given. The $i^{th}$ row in the matrix, $X$, corresponds to the $i^{th}$ Homo BITSian. Similarly, the $i^{th}$ row in the matrix, $Y$, corresponds to the $i^{th}$ Redi.</p>
 <p><strong>Note</strong>: Here, row numbering (indexing) starts from $0$.</p>
 <h3 id="Task">
 <a class="anchor" href="#Task" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task<a class="anchor-link" href="#Task"> </a>
@@ -656,7 +659,7 @@ Base test case 2 successful!!
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/blog/broadcasting/2020/07/24/Vectorization.html" hidden></a>
+</script><a class="u-url" href="/blog/broadcasting/numpy/2020/07/24/Vectorization.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
