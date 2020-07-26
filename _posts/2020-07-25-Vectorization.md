@@ -6,7 +6,7 @@ toc: true
 badges: true
 comments: true
 author: Aditya Rana, Amey Agrawal and Nikhil Verma
-image: images/diagram.png
+image: images/nagarji.jpg
 categories: [broadcasting,numpy]
 nb_path: _notebooks/2020-25-07-Vectorization.ipynb
 layout: notebook
@@ -31,6 +31,13 @@ layout: notebook
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This problem is similar to Stanford's kNN classifier assignment which implements this algorithm on the CIFAR-10 dataset</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/images/copied_from_nb/my_icons/nagarji.jpg" alt="" title="Redi at BITS Pilani"></p>
 
 </div>
 </div>
