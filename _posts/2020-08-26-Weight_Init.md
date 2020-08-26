@@ -1,6 +1,6 @@
 ---
 keywords: fastai
-description: why does good initialization matter in neural networks and what is gradient vanishing
+description: why does good initialization matter in neural networks and what are vanishing gradients
 title: Don't Trust PyTorch to Initialize Your Variables
 toc: true 
 badges: true
@@ -493,7 +493,7 @@ $$ Var(y_{i}) = Var(x_{1} w_{1} + x_{2} w_{2} + \cdots + x_{n} w_{n}) $$
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Hence the condition for the variances to remain same that is $$ Var(y_{i}) = Var(x_{i})$$ the condition is  $$ Var(w_i) = \frac{1}{Din} $$</p>
+<p>Hence for the variances to remain same between layers that is $$ Var(y_{i}) = Var(x_{i})$$ the condition is  $$ Var(w_i) = \frac{1}{Din} $$</p>
 <p>That's it, the Xavier initialization.</p>
 
 </div>
@@ -647,7 +647,7 @@ $$ Var(y_{i}) = Var(x_{1} w_{1} + x_{2} w_{2} + \cdots + x_{n} w_{n}) $$
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Things are looking much better now</p>
+<p>The activations look much better now</p>
 
 </div>
 </div>
