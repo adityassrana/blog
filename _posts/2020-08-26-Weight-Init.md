@@ -7,7 +7,7 @@ badges: true
 comments: true
 author: Aditya Rana
 image: images/weightinit_meme.png
-categories: [theory, PyTorch]
+categories: [theory]
 nb_path: _notebooks/2020-08-26-Weight-Init.ipynb
 layout: notebook
 ---

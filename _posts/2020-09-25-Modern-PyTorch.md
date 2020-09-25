@@ -61,7 +61,7 @@ layout: notebook
 <h3 id="PyTorch-vs-Keras/TF">PyTorch vs Keras/TF<a class="anchor-link" href="#PyTorch-vs-Keras/TF"> </a></h3><p>Sometimes you would see people fighting over PyTorch vs Keras/Tensorflow and which is better. I usually don't enjoy such debates, or even support PyTorch for that matter. I believe there's a variety of people out there who have their own programming style preferences, and whichever framework suits their taste better, they should use it. I feel more comfortable and cognitively at ease using PyTorch and that's why I prefer the PyTorch ecosystem, but at the same time I don't mind working with Tensorflow whenever I have to.</p>
 <p>{% include image.html height="300" max-width="300" file="/blog/images/copied_from_nb/images/meme1.png" %}</p>
 <p>I do like PyTorch vs TF memes though, who doesn't?</p>
-<p>{% include image.html height="300" max-width="300" file="/blog/images/copied_from_nb/images/meme2.png" %}</p>
+<p>{% include image.html height="400" max-width="400" file="/blog/images/copied_from_nb/images/meme2.png" %}</p>
 
 </div>
 </div>
