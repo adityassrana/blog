@@ -7,7 +7,7 @@ badges: true
 comments: true
 author: Aditya Rana, Amey Agrawal and Nikhil Verma
 image: images/nagarji.jpg
-categories: [broadcasting]
+categories: [broadcasting, numpy]
 nb_path: _notebooks/2020-07-24-Vectorization.ipynb
 layout: notebook
 ---
