@@ -208,7 +208,7 @@ window.onload = wrap_img;
 </h2>
 <p><figure>
   
-    <img class="docimage" src="/blog/images/copied_from_nb/images/pytorch-logo-dark.png" alt="" style="max-width: 400px">
+    <img class="docimage" src="/blog/images/copied_from_nb/images/pytorch-logo-dark.png" alt="" style="max-width: 300px">
     
     
 </figure>
@@ -228,7 +228,7 @@ window.onload = wrap_img;
 </h3>
 <p><figure>
   
-    <img class="docimage" src="/blog/images/copied_from_nb/images/fastai.png" alt="" style="max-width: 400px">
+    <img class="docimage" src="/blog/images/copied_from_nb/images/fastai.png" alt="" style="max-width: 300px">
     
     
 </figure>
@@ -259,25 +259,17 @@ window.onload = wrap_img;
 <a class="anchor" href="#PyTorch-vs-Keras/TF" aria-hidden="true"><span class="octicon octicon-link"></span></a>PyTorch vs Keras/TF<a class="anchor-link" href="#PyTorch-vs-Keras/TF"> </a>
 </h3>
 <p>Sometimes you would see people fighting over PyTorch vs Keras/Tensorflow and which is better. I am not the person who enjoys such debates, or even support PyTorch for that matter. I believe there's a variety of people out there who have their own programming style preferences, and whichever framework suits their taste better, they should use it. I feel more comfortable and cognitively at ease using PyTorch and that's why I prefer the PyTorch ecosystem, but at the same time I don't mind working with Tensorflow whenever I have to.</p>
-<p>I do like PyTorch vs TF memes though, who doesn't?</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <p><figure>
   
     <img class="docimage" src="/blog/images/copied_from_nb/images/meme1.png" alt="" style="max-width: 300px">
     
     
 </figure>
-
-<br>
-<figure>
+</p>
+<p>I do like PyTorch vs TF memes though, who doesn't?</p>
+<p><figure>
   
-    <img class="docimage" src="/blog/images/copied_from_nb/images/meme2.png" alt="" style="max-width: 500px">
+    <img class="docimage" src="/blog/images/copied_from_nb/images/meme2.png" alt="" style="max-width: 300px">
     
     
 </figure>
@@ -294,7 +286,7 @@ window.onload = wrap_img;
 </h2>
 <p><figure>
   
-    <img class="docimage" src="/blog/images/copied_from_nb/images/pl.png" alt="" style="max-width: 400px">
+    <img class="docimage" src="/blog/images/copied_from_nb/images/pl.png" alt="" style="max-width: 300px">
     
     
 </figure>
@@ -358,7 +350,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The original post is a delight to read so I'm not going to post any examples from that, I would encourage you to check it out.</p>
+<p>The original post is a delight to read so I'm going to post only one example from that and not much.</p>
 
 </div>
 </div>
@@ -375,7 +367,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>your code becomes much cleaner and understandalbe when using nn.Sequential(). You would have already realized it by now if you read the post linked above.</p>
+<p>your code becomes much cleaner and understandable when using nn.Sequential(). You would have already realized it by now if you read the post linked above.</p>
 
 </div>
 </div>
@@ -485,11 +477,12 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NewEncoder</span><span class="p">():</span> <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
-                                       <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
-                                       <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
-                                       <span class="c1"># Focus here</span>
-                                       <span class="n">Lambda</span><span class="p">(</span><span class="n">bin_values</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">NewEncoder</span><span class="p">():</span> 
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                       <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                       <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
+                       <span class="c1"># Focus here</span>
+                       <span class="n">Lambda</span><span class="p">(</span><span class="n">bin_values</span><span class="p">))</span>
 </pre></div>
 
 </div>
