@@ -178,7 +178,7 @@ layout: notebook
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An elementwise function that bins values</span>
 <span class="sd">    to 0 or 1 depending on a threshold of 0.5,</span>
-<span class="sd">    but in backward pass acts as a linear layer.</span>
+<span class="sd">    but in backward pass acts as an identity layer.</span>
 
 <span class="sd">    Such layers are also known as </span>
 <span class="sd">    straight-through gradient estimators</span>
@@ -266,6 +266,41 @@ layout: notebook
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There are several ways to initialize neural networks and you can read more about them in my post on weight initialization <a href="https://adityassrana.github.io/blog/theory/2020/08/26/Weight-Init.html">here</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Kornia">Kornia<a class="anchor-link" href="#Kornia"> </a></h2><h3 id="Data-Augmentation">Data Augmentation<a class="anchor-link" href="#Data-Augmentation"> </a></h3><p>Data Augmentation in PyTorch pipelines is usually done using torchvision.transforms. The pipeline can be summarized as</p>
+
+<pre><code>Image --&gt; Crop/Resize --&gt; toTensor --&gt; Normalize
+
+</code></pre>
+<p>All the augmentattions are performed on the CPU so you need to make sure that your data processing does not become your training bottleneck when using large batchsizes. This is the time for introducing -</p>
+<p>{% include image.html height="300" max-width="300" file="/blog/images/copied_from_nb/images/kornia_logo.svg" %}</p>
+<p><a href="https://github.com/kornia/kornia">Kornia</a> is a differentiable computer vision library for PyTorch started by Edgar Riba and Dmytro Mishkin, that operates directly on tensors, hence letting you make full use of your GPUs. They have also recently released a <a href="https://arxiv.org/abs/1910.02190">paper</a></p>
+<p>It allows you to use data augmentation similar to a nn.Module(), and you can even combine the transforms in a nn.Sequential()</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kornia</span>
+
+<span class="n">transform</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">kornia</span><span class="o">.</span><span class="n">enhance</span><span class="o">.</span><span class="n">AdjustBrightness</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">kornia</span><span class="o">.</span><span class="n">enhance</span><span class="o">.</span><span class="n">AdjustGamma</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">2.</span><span class="p">),</span>
+    <span class="n">kornia</span><span class="o">.</span><span class="n">enhance</span><span class="o">.</span><span class="n">AdjustContrast</span><span class="p">(</span><span class="mf">0.7</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">images</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These are the most important things you need to know</p>
+<h3 id="Features">Features<a class="anchor-link" href="#Features"> </a></h3><p>{% include image.html height="400" max-width="400" file="/blog/images/copied_from_nb/images/kornia_image.png" %}</p>
+<h3 id="Comparison-with-Other-Pipelines">Comparison with Other Pipelines<a class="anchor-link" href="#Comparison-with-Other-Pipelines"> </a></h3><p>{% include image.html file="/blog/images/copied_from_nb/images/kornia_table1.png" %}</p>
+<p>{% include image.html height="400" max-width="400" file="/blog/images/copied_from_nb/images/kornia_table2.png" %}</p>
 
 </div>
 </div>
