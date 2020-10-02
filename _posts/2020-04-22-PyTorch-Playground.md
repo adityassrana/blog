@@ -370,7 +370,6 @@ while maintaining differentiabilty</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Creating-a-SummaryWriter">Creating a SummaryWriter<a class="anchor-link" href="#Creating-a-SummaryWriter"> </a></h3><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
 <span class="n">writer_train</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">experiment_dir</span><span class="p">,</span><span class="s2">&quot;tensorboard&quot;</span><span class="p">))</span>
-<span class="err">`</span>
 </pre></div>
 <h3 id="Scalars">Scalars<a class="anchor-link" href="#Scalars"> </a></h3><p>Logging statements are added at different steps in the training loop wherever you want to log something. You can track scalars, images and even histograms. You can read more about this on the official <a href="https://pytorch.org/docs/stable/tensorboard.html">PyTorch docs</a></p>
 <p>Logging scalars can be as simple as</p>
