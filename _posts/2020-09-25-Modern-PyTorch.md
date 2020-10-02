@@ -102,8 +102,10 @@ layout: notebook
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="http://arogozhnikov.github.io/images/einops/einops_video.gif" alt=""></p>
-
+<video controls autoplay>
+  <source src="http://arogozhnikov.github.io/images/einops/einops_video.mp4" type="video/mp4">
+  <img src="http://arogozhnikov.github.io/images/einops/einops_video.gif" alt="einops package examples" />
+</video>
 </div>
 </div>
 </div>
