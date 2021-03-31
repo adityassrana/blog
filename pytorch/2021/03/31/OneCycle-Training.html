@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Handling the Woes of Training | Aditya Rana Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Handling the Woes of Training" />
+<meta name="author" content="Aditya Rana" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="how to find the best learning rate and add OneCycle training to your deep learning model" />
+<meta property="og:description" content="how to find the best learning rate and add OneCycle training to your deep learning model" />
+<link rel="canonical" href="https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html" />
+<meta property="og:site_name" content="Aditya Rana Blog" />
+<meta property="og:image" content="https://adityassrana.github.io/blog/images/cycle_crying_kid.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-31T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Aditya Rana"},"description":"how to find the best learning rate and add OneCycle training to your deep learning model","dateModified":"2021-03-31T00:00:00-05:00","datePublished":"2021-03-31T00:00:00-05:00","headline":"Handling the Woes of Training","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html"},"image":"https://adityassrana.github.io/blog/images/cycle_crying_kid.jpg","url":"https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-156433332-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="icon" type="image/png" href=/blog/images/twowolves.png><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Handling the Woes of Training | Aditya Rana Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Handling the Woes of Training" />
+<meta name="author" content="Aditya Rana" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="how to find the best learning rate and add OneCycle training to your deep learning model" />
+<meta property="og:description" content="how to find the best learning rate and add OneCycle training to your deep learning model" />
+<link rel="canonical" href="https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html" />
+<meta property="og:url" content="https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html" />
+<meta property="og:site_name" content="Aditya Rana Blog" />
+<meta property="og:image" content="https://adityassrana.github.io/blog/images/cycle_crying_kid.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-31T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Aditya Rana"},"description":"how to find the best learning rate and add OneCycle training to your deep learning model","dateModified":"2021-03-31T00:00:00-05:00","datePublished":"2021-03-31T00:00:00-05:00","headline":"Handling the Woes of Training","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html"},"image":"https://adityassrana.github.io/blog/images/cycle_crying_kid.jpg","url":"https://adityassrana.github.io/blog/pytorch/2021/03/31/OneCycle-Training.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://adityassrana.github.io/blog/feed.xml" title="Aditya Rana Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-156433332-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/"> <img src= "/blog/images/twowolves.png" width="40"> Aditya Rana Blog </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about">About</a><a class="page-link" href="/blog/resources/">Resources</a><a class="page-link" href="/blog/archive/">Archive</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Handling the Woes of Training</h1><p class="page-description">how to find the best learning rate and add OneCycle training to your deep learning model</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-31T00:00:00-05:00" itemprop="datePublished">
+        Mar 31, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Aditya Rana</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#PyTorch">PyTorch</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/adityassrana/blog/tree/master/_notebooks/2021-03-31-OneCycle-Training.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/adityassrana/blog/master?filepath=_notebooks%2F2021-03-31-OneCycle-Training.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/adityassrana/blog/blob/master/_notebooks/2021-03-31-OneCycle-Training.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Who-needs-to-read-this-post?">Who needs to read this post? </a></li>
+<li class="toc-entry toc-h2"><a href="#TL;DR-Show-me-the-code">TL;DR Show me the code </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#LR-Range-Test">LR Range Test </a></li>
+<li class="toc-entry toc-h3"><a href="#OneCycle-Training">OneCycle Training </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#TBD">TBD </a></li>
+<li class="toc-entry toc-h2"><a href="#Papers-Discussed">Papers Discussed </a></li>
+<li class="toc-entry toc-h2"><a href="#Extra-Readings">Extra Readings </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-03-31-OneCycle-Training.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Who-needs-to-read-this-post?">
+<a class="anchor" href="#Who-needs-to-read-this-post?" aria-hidden="true"><span class="octicon octicon-link"></span></a>Who needs to read this post?<a class="anchor-link" href="#Who-needs-to-read-this-post?"> </a>
+</h2>
+<p>This post is useful if you're training deep learning models (eg. ResNets) for tasks like Image Classification, Object Detection, Image Segmentation and many more. You can use the approaches mentioned here for both training from scratch as well as for fine-tuning. This post is meant to answer questions like</p>
+<ul>
+<li>what is the best learning rate for my model?<blockquote>
+<p><span style="color:Green"> we'll look at a learning rate finding poicy that takes less than a minute to run</span></p>
+</blockquote>
+</li>
+<li>how to train my models much faster and spend less compute time?<blockquote>
+<p><span style="color:Green"> the models train faster as this approach allows us to use much higher learning rates for training that would otherwise be unsuitable </span></p>
+</blockquote>
+</li>
+<li>how does it benefit my model?<blockquote>
+<p><span style="color:Green">using higher learning rates help us avoid getting stuck in local minimas</span></p>
+</blockquote>
+</li>
+<li>how can I schedule my learning rate to get the best performance?<blockquote>
+<p><span style="color:Green"> we will implement the OneCycle training policy that this post is about</span></p>
+</blockquote>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="TL;DR-Show-me-the-code">
+<a class="anchor" href="#TL;DR-Show-me-the-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>TL;DR Show me the code<a class="anchor-link" href="#TL;DR-Show-me-the-code"> </a>
+</h2>
+<p>These ideas were popularized by the <a href="https://docs.fast.ai/">fastai</a> library which is based on PyTorch, but implements them using Callbacks in their custom training script. If you just want to quickly test and add LRFinder and OneCycle learning rate schedule to your training pipeline, you can directly adapt the code below to your script.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="LR-Range-Test">
+<a class="anchor" href="#LR-Range-Test" aria-hidden="true"><span class="octicon octicon-link"></span></a>LR Range Test<a class="anchor-link" href="#LR-Range-Test"> </a>
+</h3>
+<p>If you're like me, you would just put 3e-4 into an Adam optimizer and let the model train. But in the last few years, a lot has happened that has made it easier to find the optimal learning rate for our model</p>
+<p>In 2015, Leslie N. Smith came up with a trial-and-error technique called the LR Range Test. The idea is simple, you just run your model and data for a few iterations, with the learning rate initially starting at a very small value and then increasing linearly/exponentially after each iteration. We assume that the optimal learning rate is bound to lie between these two extremas, usually taken as [1e-7, 10]. You record the loss for each value of learning rate and plot it up. The low initial learning rate allows the network to start converging and as the learning rate is increased it will eventually be too large and the network will diverge.</p>
+<p>A plot for LR Range test should consist of all 3 regions, the first is where the learning rate is too small that loss barely decreases, the “just right” region where loss converges quickly, and the last region where learning rate is too big that loss starts to diverge.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/images/lr_range_test.png" alt="" style="max-width: 400px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For this test, you can use the library <a href="https://github.com/davidtvs/pytorch-lr-finder">pytorch-lr-finder</a> for finding the best learning rate for your PyTorch model. If you are using PyTorch Lighting, you can use their builtin <a href="https://pytorch-lightning.readthedocs.io/en/latest/advanced/lr_finder.html">lr_finder </a> module. A keras implementation is also available <a href="https://github.com/surmenok/keras_lr_finder">here</a>. As you will see later in the post, implementing this finder is pretty straightforward once you understand the method, but I'm linking these libraries here only to give you a headstart.</p>
+<p>This is the plot we want to obtain and analyze</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/images/lr_finder_lightning.png" alt="" style="max-width: 400px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>How to Interpret this</strong></p>
+<p>It is recommended to not pick the learning rate that achieves the lowest loss, but instead something in the middle of the sharpest downward slope (red point), as this is the point at which loss is still decreasing, whereas at the lowest point, the loss has already started increasingg.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="OneCycle-Training">
+<a class="anchor" href="#OneCycle-Training" aria-hidden="true"><span class="octicon octicon-link"></span></a>OneCycle Training<a class="anchor-link" href="#OneCycle-Training"> </a>
+</h3>
+<p>The <a href="https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.OneCycleLR">OneCyle scheduler</a> is directly available for use in PyTorch. Some things to keep in mind:</p>
+<ol>
+<li>
+<p>You have to call <code>scheduler.step()</code> after every batch. This is unlike most schedulers which are called after every epoch.</p>
+</li>
+<li>
+<p>OneCycle works only with optimizers that use momentum (they track the running average of gradients) like SGD, Adam and RMSProp but it won't work with AdaDelta or Adagrad which only track the running average of squared gradients. You'll understand why when we go into details.</p>
+</li>
+<li>
+<p>In my experience, Adam optimizer has worked the best with this schedule.</p>
+</li>
+</ol>
+<p>The idea is to decrease the momentum when increasing the learning rate and to increase it when decreasing the learning rate. With this policy, the author demonstrates an event called “super-convergence”, where it reaches the same validation accuracy in only 1/5 of the iterations.</p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/images/lr_mom_iter.png" alt="" style="max-width: 700px">
+    
+    
+</figure>
+</p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/images/onecycle_results.png" alt="">
+    
+    
+</figure>
+</p>
+<p>Let's get down to code</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_lr</span><span class="p">(</span><span class="n">optimizer</span><span class="p">):</span>
+    <span class="sd">""""</span>
+<span class="sd">    for tracking how your learning rate is changing throughout training</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">param_group</span> <span class="ow">in</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">param_group</span><span class="p">[</span><span class="s1">'lr'</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">fit_one_cycle</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">max_lr</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">):</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Set up optimizer</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">max_lr</span><span class="p">)</span>
+    <span class="c1"># Set up one-cycle learning rate scheduler </span>
+    <span class="n">sched</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">OneCycleLR</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">max_lr</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span><span class="p">,</span> 
+                                                <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="c1"># Training Phase </span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">train_losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">training_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+            <span class="c1"># Record loss</span>
+            <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+            <span class="c1"># Record &amp; update learning rate</span>
+            <span class="n">lrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_lr</span><span class="p">(</span><span class="n">optimizer</span><span class="p">))</span>
+            <span class="n">sched</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="c1"># Validation phase</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">'train_loss'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">'lrs'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lrs</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">history</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you want to see the entire training script in action, you can follow the notebooks presented below</p>
+<ol>
+<li><a href="https://github.com/adityassrana/object-detection-mnist">Object Detection MNIST</a></li>
+<li><a href="https://jovian.ai/aakashns/05b-cifar10-resnet">Image Classification - CIFAR10</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="TBD">
+<a class="anchor" href="#TBD" aria-hidden="true"><span class="octicon octicon-link"></span></a>TBD<a class="anchor-link" href="#TBD"> </a>
+</h2>
+<p>This post is a work-in-progress and will be completed in the coming days with the theoretical analysis of these ideas.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Papers-Discussed">
+<a class="anchor" href="#Papers-Discussed" aria-hidden="true"><span class="octicon octicon-link"></span></a>Papers Discussed<a class="anchor-link" href="#Papers-Discussed"> </a>
+</h2>
+<ol>
+<li><a href="https://arxiv.org/abs/1506.01186">Cyclical Learning Rates for Training Neural Networks</a></li>
+<li><a href="https://arxiv.org/abs/1803.09820">A disciplined approach to neural network hyper-parameters: Part 1 -- learning rate, batch size, momentum, and weight decay</a></li>
+<li><a href="https://arxiv.org/abs/1708.07120">Super-Convergence: Very Fast Training of Neural Networks Using Large Learning Rates</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Extra-Readings">
+<a class="anchor" href="#Extra-Readings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extra Readings<a class="anchor-link" href="#Extra-Readings"> </a>
+</h2>
+<p>If you want to get deep (pun intended) into playing around with these concepts I would highly recommend you to watch fast.ai's <a href="https://course19.fast.ai/part2">Deep Learning from the Foundations</a>, spending most of your time reimplementing the notebooks by yourself. Here are some other resources that talk about these ideas</p>
+<ol>
+<li><a href="https://sgugger.github.io/the-1cycle-policy.html">https://sgugger.github.io/the-1cycle-policy.html</a></li>
+<li><a href="https://sgugger.github.io/how-do-you-find-a-good-learning-rate.html#how-do-you-find-a-good-learning-rate">https://sgugger.github.io/how-do-you-find-a-good-learning-rate.html#how-do-you-find-a-good-learning-rate</a></li>
+<li><a href="https://medium.com/dsnet/the-1-cycle-policy-an-experiment-that-vanished-the-struggle-in-training-neural-nets-184417de23b9">https://medium.com/dsnet/the-1-cycle-policy-an-experiment-that-vanished-the-struggle-in-training-neural-nets-184417de23b9</a></li>
+<li><a href="https://medium.com/vitalify-asia/whats-up-with-deep-learning-optimizers-since-adam-5c1d862b9db0">https://medium.com/vitalify-asia/whats-up-with-deep-learning-optimizers-since-adam-5c1d862b9db0</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="adityassrana/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/pytorch/2021/03/31/OneCycle-Training.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/adityassrana" title="adityassrana"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/adityassrana" title="adityassrana"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
