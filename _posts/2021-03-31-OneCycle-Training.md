@@ -199,7 +199,6 @@ layout: notebook
 <ol>
 <li><a href="https://sgugger.github.io/the-1cycle-policy.html">https://sgugger.github.io/the-1cycle-policy.html</a></li>
 <li><a href="https://sgugger.github.io/how-do-you-find-a-good-learning-rate.html#how-do-you-find-a-good-learning-rate">https://sgugger.github.io/how-do-you-find-a-good-learning-rate.html#how-do-you-find-a-good-learning-rate</a></li>
-<li><a href="https://medium.com/dsnet/the-1-cycle-policy-an-experiment-that-vanished-the-struggle-in-training-neural-nets-184417de23b9">https://medium.com/dsnet/the-1-cycle-policy-an-experiment-that-vanished-the-struggle-in-training-neural-nets-184417de23b9</a></li>
 </ol>
 
 </div>
