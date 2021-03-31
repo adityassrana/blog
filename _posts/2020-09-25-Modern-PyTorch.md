@@ -30,7 +30,7 @@ layout: notebook
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="PyTorch">PyTorch<a class="anchor-link" href="#PyTorch"> </a></h2><p>{% include image.html height="300" max-width="300" file="/blog/images/copied_from_nb/images/pytorch-logo-dark.png" %}</p>
+<h2 id="PyTorch">PyTorch<a class="anchor-link" href="#PyTorch"> </a></h2><p>{% include image.html max-width="300" file="/blog/images/copied_from_nb/images/pytorch-logo-dark.png" %}</p>
 <p>Learning a programming language/framework is a lot like learning foreign languages. Just studying them online or from a book is hardly sufficient and one needs to get actively involved in conversations and discussions to get the pronunciation and flow of speaking right. The same goes for writing code, so get started on the <a href="https://discuss.pytorch.org/">PyTorch Forums</a> and <a href="https://stackoverflow.com/search?q=pytorch">Stack Overflow</a>.</p>
 <p>I'm writing this post after 2 years of using PyTorch, after having started learning from Udacity courses and online blogs, to  heavily experimenting with PyTorch's functionalities during my bachelor's thesis, and then more recently having finished the <a href="https://course19.fast.ai/part2">fast.ai's Deep Learning from Foundations</a> where Jeremy Howard recreates several core modules of PyTorch and discusses his thought process on creating the latest fastai library.</p>
 <p>The purpose of this post is to not to be an all-purpose tutorial or template since there're already a lot of amazing people out there teaching PyTorch, but instead it aims to answer the FAQs and guide people to the right resources.</p>
@@ -40,7 +40,7 @@ layout: notebook
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started"> </a></h3><p>{% include image.html height="300" max-width="300" file="/blog/images/copied_from_nb/images/fastai.png" %}</p>
+<h3 id="Getting-Started">Getting Started<a class="anchor-link" href="#Getting-Started"> </a></h3><p>{% include image.html max-width="300" file="/blog/images/copied_from_nb/images/fastai.png" %}</p>
 <p>If I had to start learning PyTorch all over again, I wouldn't think twice and dig deep into everything Jeremy Howard has to offer. He is the co-founder of <a href="https://www.fast.ai/">fast.ai</a> along with Rachel Thomas and every year they release several courses on deep learning for <strong>free</strong>. This is world-class educational content you can enjoy at no cost, not even any ads or sponsors * gasps *. There aren't many quality things in the world that come for free so I would definitely recommend you to check <a href="https://www.fast.ai/">fast.ai</a> out.</p>
 <p>If you're confused where to start from all the courses offered, I would suggest watching the first 2-3 videos of their most recent offering of "Practical Deep Learning for Coders", and in parallel starting with the course <a href="https://course19.fast.ai/part2">Deep Learning from Foundations</a></p>
 <p>If you're looking for a fast-track introduction to PyTorch, you can read this tutorial <a href="https://pytorch.org/tutorials/beginner/nn_tutorial.html">"What is torch.nn really?"</a> by Jeremy on the official PyTorch page.</p>
