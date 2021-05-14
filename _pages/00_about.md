@@ -1,6 +1,6 @@
 ---
 layout : about
-title: About
+title: About Me
 permalink: /about
 search_exclude: true
 ---
