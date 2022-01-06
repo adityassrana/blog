@@ -324,13 +324,7 @@ window.onload = wrap_img;
 <h2 id="Writing-Modern-Python">
 <a class="anchor" href="#Writing-Modern-Python" aria-hidden="true"><span class="octicon octicon-link"></span></a>Writing Modern Python<a class="anchor-link" href="#Writing-Modern-Python"> </a>
 </h2>
-<p>Go through the two links below to get upto date with Type hinting, better globbing, f-strings, data classes, using Enum for constants, and a lot more</p>
-<ol>
-<li>
-<a href="https://github.com/arogozhnikov/python3_with_pleasure">An excellent post on Python 3 features</a> by Alex Rogozhnikov, who's also the creator of einops, the library we'll discuss next</li>
-<li>
-<a href="https://twitter.com/svpino/status/1308632185113579522">A Twitter thread</a> by Santiago</li>
-</ol>
+<p>You should go through this excellent <a href="https://github.com/arogozhnikov/python3_with_pleasure">post</a> on Python3 features by Alex Rogozhnikov where he discusses type hinting, better globbing, f-strings, data classes, using Enum for constants, and a lot more. He is also the creator of einops, the library we'll discuss next</p>
 
 </div>
 </div>
@@ -546,7 +540,7 @@ window.onload = wrap_img;
 </h3>
 <p>Data Augmentation in PyTorch pipelines is usually done using torchvision.transforms. The pipeline can be summarized as</p>
 
-<pre><code>Image --&gt; Crop/Resize --&gt; toTensor --&gt; Normalize
+<pre><code>Image --&gt; Crop/Resize --&gt; ToTensor --&gt; Normalize
 
 </code></pre>
 <p>All the augmentattions are performed on the CPU so you need to make sure that your data processing does not become your training bottleneck when using large batchsizes. This is the time for introducing -</p>

@@ -334,7 +334,7 @@ window.onload = wrap_img;
 </pre></div>
 <p>If you're wondering where do these mean and std values come from, the answer is, the <a href="http://www.image-net.org/">ImageNet dataset</a>. It's a huge dataset of 14 million images and most pre-trained models are originally trained on this. The above values are the channel-wise mean and std of all the images in the dataset. So whenever you import a pre-trained model from torchvision, make sure you apply the normalization based on the statistics of the dataset that the model was trained on. Hence, the pipeline can be summarized as</p>
 
-<pre><code>Image --&gt; Crop/Resize --&gt; toTensor --&gt; Normalize
+<pre><code>Image --&gt; Crop/Resize --&gt; ToTensor --&gt; Normalize
 
 </code></pre>
 <p>To read more about why we normalize our data, read my blog post on this <a href="https://adityassrana.github.io/blog/theory/2020/08/26/Weight-Init.html">here</a></p>
