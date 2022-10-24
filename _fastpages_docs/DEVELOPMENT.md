@@ -14,7 +14,7 @@ The live preview requires that you have Docker installed on your machine. [Follo
 
 ## Seeing All Commands In The Terminal
 
-There are many different `docker-compose` commands that are necessary to manage the lifecycle of the fastpages Docker containers.  To make this easier, we aliased common commands in a [Makefile](https://www.gnu.org/software/make/manual/html_node/Introduction.html).  
+There are many different `docker compose` commands that are necessary to manage the lifecycle of the fastpages Docker containers.  To make this easier, we aliased common commands in a [Makefile](https://www.gnu.org/software/make/manual/html_node/Introduction.html).  
 
 You can quickly see all available commands by running this command in the root of your repository:
 
@@ -97,7 +97,7 @@ make bash-jekyll
 make bash-nb
 ```
 
-_Note: you can use `docker-compose run` instead of `make bash-nb` or `make bash-jekyll` to start a service and then attach to it.
+_Note: you can use `docker compose run` instead of `make bash-nb` or `make bash-jekyll` to start a service and then attach to it.
 Or you can run all your services in the background, `make server-detached`, and then use `make bash-nb` or `make bash-jekyll` as in the examples above._
 
 ## Running A Jupyter Server
