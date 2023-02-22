@@ -7,7 +7,7 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: Aditya Rana Blog
-description: 
+description: A place to put together my thoughts on programming and deep learning
 github_username: adityassrana
 # you can comment the below line out if your repo name is not different than your baseurl
 #github_repo: "fastpages"
@@ -47,7 +47,7 @@ minima:
 use_math: true
 
 # Set this to true to display the summary of your blog post under your title on the Home page.
-show_description: true
+show_description: false
 
 # Set this to true to display image previews on home page, if they exist
 show_image: true
@@ -75,7 +75,7 @@ default_badges:
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true
-theme: minima
+# theme: minima
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -92,7 +92,7 @@ plugins:
 paginate: 15
 paginate_path: /page:num/
 
-# remote_theme: jekyll/minima
+remote_theme: jekyll/minima
 
 titles_from_headings:
   enabled:     true
