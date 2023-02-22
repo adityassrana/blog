@@ -28,7 +28,7 @@ services:
 
   jekyll:
     working_dir: /data
-    image: jekyll/jekyll:4.0.1
+    image: fastai/fastpages-jekyll
     restart: unless-stopped
     ports:
       - "4000:4000"

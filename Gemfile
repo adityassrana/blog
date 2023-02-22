@@ -7,9 +7,9 @@ source "https://rubygems.org"
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "~> 4.0.0"
+gem "jekyll", "= 4.1.0"
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
-gem "minima"
+gem "minima", "= 2.5.1"
 # To upgrade, run `bundle update github-pages`.
 # gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
@@ -40,6 +40,5 @@ end
 gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
 
 gem "faraday", "< 1.0"
-
 
 gem "webrick", "~> 1.8"
