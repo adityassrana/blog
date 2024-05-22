@@ -1,29 +1,8 @@
 /*-----------------------------------*/
 /*--- IMPORT STYLES FOR FASTPAGES ---*/
 @import "minima/fastpages-styles";   
-
-
-
 /*-----------------------------------*/
 /*----- ADD YOUR STYLES BELOW -------*/
-
-// If you want to turn off dark background for syntax highlighting, comment or delete the below line.
-
-/*@import "minima/fastpages-dracula-highlight";*/
-
-
-/* style.css | https://adityassrana.github.io/playground/assets/css/style.css */
-
-.post-content p, .post-content li {
-  /* font-size: 20px; */
-  font-size: 16px;
- /* color: #515151; */
-  color: #111;
-}
-
-
-
-/* style.css | http://0.0.0.0:4000/blog/assets/css/style.css */
 
 .feed-subscribe .svg-icon {
   /* padding: 5px 5px 2px 0; */
@@ -37,6 +16,53 @@
   .wrapper {
     /* max-width: calc(800px - (30px * 2)); */
     max-width: calc(860px - (30px * 2));
+  }
+}
+
+/* Custom post card styles to replace Primer CSS */
+.post-card {
+  display: table;
+  width: 100%;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.post-card-image {
+  display: table-cell;
+  width: 33.333333%;
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.post-card-content {
+  display: table-cell;
+  width: 66.666667%;
+  padding: 1rem;
+  vertical-align: top;
+}
+
+.post-card-content .post-meta {
+  font-weight: 300;
+  font-size: 15px;
+}
+
+/* Responsive design for mobile */
+@media screen and (max-width: 768px) {
+  .post-card {
+    display: block;
+  }
+  
+  .post-card-image {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+  
+  .post-card-content {
+    display: block;
+    width: 100%;
+    padding-top: 0.5rem;
   }
 }
 
