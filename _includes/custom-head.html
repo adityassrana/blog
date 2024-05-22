@@ -8,7 +8,6 @@
 
 {%- include favicons.html -%}
 {% seo %}
-<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
 {%- feed_meta -%}
 {%- if jekyll.environment == 'production' and site.google_analytics -%}
@@ -55,6 +54,8 @@ function wrap_img(fn) {
 window.onload = wrap_img;
 </script>
 
+<!-- Commented out Font Awesome anchor link icons since Font Awesome CSS is disabled -->
+<!--
 <script>
     document.addEventListener("DOMContentLoaded", function(){
     // add link icon to anchor tags
@@ -62,3 +63,4 @@ window.onload = wrap_img;
     elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
     });
 </script>
+-->

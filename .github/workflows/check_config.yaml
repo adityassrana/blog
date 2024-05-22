@@ -5,12 +5,12 @@ jobs:
  check-config:
    runs-on: ubuntu-latest
    steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: '3.12'
 
     - name: install dependencies
       run:  pip3 install pyyaml
@@ -39,7 +39,7 @@ jobs:
 
     - name: Create issue if baseurl rule is violated
       if: steps.baseurl.outcome == 'failure'
-      uses: actions/github-script@0.6.0
+      uses: actions/github-script@v7
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
@@ -53,7 +53,7 @@ jobs:
           })
       env:
         ERROR_STRING: "You have not configured your baseurl correctly, please read the instructions in _config.yml carefully."
-        RUN_ID: ${{ github.run_id	}}
+        RUN_ID: ${{ github.run_id }}
 
     - name: check for User Pages
       id: userpage
@@ -66,7 +66,7 @@ jobs:
 
     - name: Create Issue if User Pages rule is violated
       if: steps.userpage.outcome == 'failure'
-      uses: actions/github-script@0.6.0
+      uses: actions/github-script@v7
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
