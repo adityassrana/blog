@@ -90,7 +90,7 @@ GEM
     mini_portile2 (2.8.7)
     minitest (5.25.1)
     multipart-post (2.4.1)
-    nokogiri (1.15.6)
+    nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     octicons (19.8.0)
