@@ -6,7 +6,7 @@ services:
     build:
       context: ./_action_files
       dockerfile: ./Dockerfile
-    image: fastpages-dev
+    image: fastpages-dev:latest
     logging:
       driver: json-file
       options:
@@ -15,6 +15,13 @@ services:
     tty: true
     volumes:
       - .:/data/
+    # Add resource limits for efficiency
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
 
   converter:
     <<: *fastpages
@@ -27,11 +34,23 @@ services:
 
   jekyll:
     working_dir: /data
-    image: fastai/fastpages-jekyll
+    image: fastai/fastpages-jekyll:latest
     restart: unless-stopped
     ports:
       - "4000:4000"
     volumes:
       - .:/data/
+    environment:
+      - JEKYLL_ENV=development
+      - BUNDLE_GEMFILE=/data/Gemfile
+    # Add resource limits for efficiency
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
     command: >
-      bash -c "gem install bundler -v 2.4.22 && jekyll serve --trace --strict_front_matter"
+      bash -c "gem install bundler -v 2.4.22 && 
+               bundle install --retry=3 --jobs=4 && 
+               bundle exec jekyll serve --host=0.0.0.0 --port=4000 --trace --strict_front_matter --incremental --livereload"
