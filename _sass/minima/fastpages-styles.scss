@@ -1,6 +1,7 @@
 //Default Overrides For Styles In Minima 
 // If you wish to override any of this CSS, do so in _sass/minima/custom-styles.css
 
+// Center images in blog posts with proper alignment
 .post img {
         display: block;
         // border:1px solid #021a40;
@@ -9,11 +10,13 @@
         margin-right: auto;
 }
 
+// Keep emoji images inline with text instead of block-level
 img.emoji{
       display: inline !important;
       vertical-align: baseline !important;
 }
 
+// Style image captions with centered, smaller, italic text
 .post figcaption {
   text-align: center;
   font-size: .8rem;
@@ -21,23 +24,12 @@ img.emoji{
   color: light-grey;
 }
 
-.page-content {
-        -webkit-font-smoothing: antialiased !important;
-        text-rendering: optimizeLegibility !important;
-        font-family: "Segoe UI", SegoeUI, Roboto, "Segoe WP", "Helvetica Neue", "Helvetica", "Tahoma", "Arial", sans-serif !important;
-}
-
-// make non-headings slightly lighter
-.post-content p, .post-content li {
-   font-size: 20px;
-   color: #515151;
-}
-
+// Make post links use normal font weight instead of bold
 .post-link{
     font-weight: normal;
 }
 
-// change padding of headings
+// Adjust top margins for heading hierarchy - larger headings get more space
 h1 {
     margin-top:2.5rem !important;
 }
@@ -50,11 +42,13 @@ h3, h4 {
     margin-top:1.5rem !important;      
 }
 
+// Add consistent spacing above and below paragraphs
 p {
     margin-top:1rem !important; 
     margin-bottom:1rem !important;   
 }
 
+// Use normal font weight for headings and ensure code in headings matches heading size
 h1, h2, h3, h4 {
     font-weight: normal !important;
     margin-bottom:0.5rem !important;  
@@ -63,13 +57,15 @@ h1, h2, h3, h4 {
     }
 }
 
+// Add spacing below code blocks for better separation
 pre {
     margin-bottom:1.5rem !important; 
 }
 
-// make sure the post title doesn't have too much spacing
+// Reduce spacing above post titles to avoid excessive whitespace
 .post-title { margin-top: .5rem !important; }
 
+// Compact spacing for headings and descriptions within list items
 li {
   h3, h4 {
   margin-top:.05rem !important;
@@ -83,9 +79,7 @@ li {
   }
 }
 
-
-
-//  Code Folding
+// Code folding functionality - show different text when expanded/collapsed
  details.description[open] summary::after {
   content: attr(data-open);
 }
@@ -94,12 +88,12 @@ details.description:not([open]) summary::after {
   content: attr(data-close);
 }
 
-// Notebook badges
+// Remove borders from notebook badge images for cleaner appearance
 .notebook-badge-image {
   border:0 !important;
 }
 
-// Adjust font size for footnotes.
+// Make footnotes smaller and more subtle than main text
 .footnotes {
   font-size: 12px !important;
   p, li{
@@ -107,7 +101,7 @@ details.description:not([open]) summary::after {
  } 
 }
 
-// Adjust with of social media icons were getting cut off
+// Fix social media icon dimensions to prevent clipping
 .social-media-list{
   .svg-icon {
     width: 25px !important;
@@ -115,7 +109,7 @@ details.description:not([open]) summary::after {
   }
 }
 
-// Make Anchor Links Appear Only on Hover
+// Hide anchor links by default and show with smooth transition on heading hover
 
 .anchor-link {
   opacity: 0;
@@ -126,6 +120,7 @@ details.description:not([open]) summary::after {
   \-ms-transition: opacity 0.2s ease-in-out 0.1s;
 }
 
+// Show anchor links when hovering over any heading level
 h1:hover .anchor-link,
 h2:hover .anchor-link,
 h3:hover .anchor-link,
@@ -136,20 +131,21 @@ h6:hover .anchor-link {
 }
 
 
-// category tags
+// Style category tags with compact spacing and slightly larger text
 .category-tags {
   margin-top: .25rem !important;
   margin-bottom: .25rem !important;
   font-size: 105%;
 }
 
-// Custom styling for homepage post previews
+// Compact spacing and slightly larger text for homepage post metadata
 .post-meta-title, .post-meta{
   margin-top: .25em !important;
   margin-bottom: .25em !important;
   font-size: 105%;
 }
 
+// Style page descriptions with muted color and larger text
 .page-description {
   margin-top: .5rem !important;
   margin-bottom: .5rem !important;
@@ -157,7 +153,7 @@ h6:hover .anchor-link {
   font-size: 115%;
 }
 
-// Custom styling for category tags
+// Style category tag icons and links with subtle appearance
 .category-tags-icon {
   font-size: 75% !important;
   padding-left: 0.375em;
@@ -168,7 +164,7 @@ h6:hover .anchor-link {
   font-size: 13px !important;
 }
 
-// Search Page Styles
+// Complete styling for search results page layout and interactions
 .js-search-results {padding-top: 0.2rem;}
 .search-results-list-item {padding-bottom: 1rem;}
 .search-results-list-item .search-result-title {
@@ -196,7 +192,7 @@ h6:hover .anchor-link {
   font-weight:bold;
 }
 
-// Handle Overflow With Table Output
+// Make tables responsive with horizontal scrolling and compact styling
 
 table {
   display: block !important;
@@ -214,7 +210,7 @@ table {
   }
 }
 
-// customize scrollbars
+// Custom scrollbar styling for webkit browsers with rounded appearance
 ::-webkit-scrollbar {
   width: 14px;
   height: 18px;
@@ -236,7 +232,7 @@ table {
   background-color: transparent;
 }
 
-// Wrap text outputs instead of horizontal scroll
+// Force text output to wrap instead of creating horizontal scroll
 .output_text.output_execute_result {
   pre{
     white-space: pre-wrap;
@@ -244,7 +240,7 @@ table {
 }
 
 
-// Handling large charts on mobile devices
+// Enable scrolling for large content outputs (charts, tables, etc.)
 // @media only screen and (max-width: 1200px) {
 //   /* for mobile phone and tablet devices */
 //   .output_wrapper{
@@ -256,6 +252,7 @@ table {
   overflow: scroll;
 }
 
+// Custom sizing for orange-colored SVG icons
 .svg-icon.orange{
   width: 30px;
   height: 23px;
