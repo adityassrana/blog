@@ -103,10 +103,7 @@
   
 
   
-  
-
-  
-      ,"page11": {
+      ,"page10": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://adityassrana.github.io/blog/robots.txt",
